@@ -1,0 +1,129 @@
+# Changelog
+
+## [0.5.1] - 2026-05-23
+
+### Fixed
+
+- Added visible selected-file indicators and an Actions handoff banner in Advanced.
+- Added duplicate cleanup previews that keep one file and move the remaining exact duplicates to `_trash`.
+- Made Advanced-generated previews open directly in Actions for review and Apply.
+
+## [0.5.0] - 2026-05-23
+
+### Added
+
+- Added an Advanced workspace for duplicate detection, cleanup suggestions, product-code grouping, CSV exports, and visual comparison.
+- Added SHA-256 content hashing during scans for exact duplicate groups.
+- Added image perceptual hashes during scans for near-duplicate side-by-side comparison.
+- Added preview-only filename cleanup suggestions that can build a safe rename preview.
+- Added product-code extraction plus product-folder move previews for selected groups.
+- Added CSV export for scan results and operation history.
+- Added folder change watching with a Rescan now prompt.
+
+## [0.4.0] - 2026-05-23
+
+### Added
+
+- Added Files filters for minimum size, maximum size, modified-after date, and modified-before date.
+- Added extension and modified-date visibility to list, grid, and detail views.
+- Added optional project-local operation logging to `.file-studio-kh/actions.jsonl` when enabled in Settings.
+- Added Dashboard support nudge with a two-week dismiss cooldown and no feature gating.
+- Added Settings save-location picker plus a clearer About card with packaged/development status and local-build update guidance.
+- Added action previews for Normalize extension casing and Isolate by format into `_pdf`, `_png`, `_raw`, or `_other`.
+
+## [0.3.1] - 2026-05-23
+
+### Added
+
+- Added a persisted Files list/grid view switch so image-heavy folders can be reviewed as thumbnail cards.
+- Added a persisted Compact/Comfort/Wide detail-panel preference so the right preview area can be expanded during review.
+
+## [0.3.0] - 2026-05-23
+
+### Added
+
+- Added a Files detail drawer with row-click inspection, Reveal file, Open file, Copy filename, Copy relative path, and Copy full path controls.
+- Added automatic restoration of the latest scanned workspace on launch.
+- Added stronger action preview summaries, including affected size, folder requirements, operation type, and History logging reminders before Apply.
+- Added clickable applied operation details in History with item-level original paths, target paths, messages, and undo status.
+- Added manual review statuses for files, including approved, needs review, reference, trash candidate, and organized.
+- Added review-status filtering and bulk/detail status updates on the Files page.
+- Added ignored folder names in Settings and Dashboard scan warnings for hidden files, ignored folders, `_trash`, and large scans.
+- Added action presets for saving and reusing common move, trash, rename, and sequence setups.
+
+## [0.2.5] - 2026-05-23
+
+### Added
+
+- Added a user-facing README explaining what File Studio KH is for, the safe workflow, install steps, and the macOS quarantine removal command for trusted local builds.
+
+## [0.2.4] - 2026-05-23
+
+### Added
+
+- Added Reveal root/folder controls to the Files folder tree so users can open the active folder in Finder before rescanning.
+
+## [0.2.3] - 2026-05-23
+
+### Fixed
+
+- Added a generated macOS `.icns` app icon from the File Studio KH logo and configured packaged DMG builds to use it.
+
+## [0.2.2] - 2026-05-23
+
+### Added
+
+- Wired the language setting into a lightweight translation layer and added Khmer translations for the app shell, navigation, core controls, and key empty/status states.
+
+### Fixed
+
+- Fixed the What's New modal so long changelog content scrolls inside the dialog instead of overflowing past the viewport.
+- Fixed Files layout bounds so the app sidebar footer stays visible and the folder tree, file table, and preview panel scroll within the window.
+
+## [0.2.1] - 2026-05-23
+
+### Added
+
+- Added the first File Studio KH logo mark with `KH` inside for the app sidebar and reusable vector asset.
+
+## [0.2.0] - 2026-05-23
+
+### Added
+
+- Added confirmed Apply for ready action preview rows, with on-disk move/rename operations and SQLite-backed operation logs.
+- Added undo for applied operations, including clear failure messages when moved files were manually deleted or moved before restore.
+- Added Settings controls for `_trash` location: inside the selected root by default, or a custom base folder with per-root subfolders.
+- Added applied operation history with undo status and undo results.
+
+## [0.1.2] - 2026-05-23
+
+### Fixed
+
+- Excluded the root-level `_trash` soft-delete folder from normal scan results so future trashed files do not keep appearing as active files.
+- Prevented already-trashed paths from being previewed as another trash move.
+- Clarified that action preview paths are proposed future destinations, not current moved locations.
+
+## [0.1.1] - 2026-05-23
+
+### Fixed
+
+- Corrected the packaged Electron entry point so macOS DMG builds can launch the app.
+
+## [0.1.0] - 2026-05-22
+
+### Added
+
+- Created the initial Electron, React, Vite, and TypeScript app shell.
+- Added the left-sidebar navigation, Settings, Support, What's New, version display, modal, toast, and crash logging foundation.
+- Added native folder selection, recent folder storage, SQLite-backed read-only scanning, dashboard summaries, and a first scan-results file list.
+- Added folder tree aggregation plus server-side pagination, search, folder, type, extension, and tag filtering for scan results.
+- Added image dimension extraction and cached thumbnail previews for image rows.
+- Added scan progress updates, scan cancellation, and a clearer gear icon for Settings.
+- Added thumbnail cache usage stats, cache size enforcement, and a clear-cache control in Settings.
+- Added scan-wide tag aggregation so tag filters show all tags found in the scan.
+- Added file selection and preview-only bulk actions for moving, trashing, and rename transforms.
+- Added sequential numbering previews and folder-creation details to bulk action previews.
+- Added select-all-matching-current-filters and faster navigation from file selection to action previews.
+- Added persisted preview history for dry-run bulk action previews.
+- Added preview detail reload from History for persisted dry-run previews.
+- Added preview revalidation against current disk state, including missing-source detection.
