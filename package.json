@@ -1,6 +1,6 @@
 {
   "name": "file-studio-kh",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "A local-first desktop app for safely organizing messy media folders.",
   "main": "dist-electron/index.js",
   "type": "module",
@@ -57,7 +57,8 @@
       "package.json",
       "README.md",
       "ABOUT.md",
-      "CHANGELOG.md"
+      "CHANGELOG.md",
+      "ACCEPTANCE.md"
     ],
     "mac": {
       "category": "public.app-category.productivity",

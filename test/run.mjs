@@ -10,7 +10,7 @@ import electronPath from 'electron';
 const dir = mkdtempSync(join(tmpdir(), 'file-studio-kh-check-'));
 const child = spawn(String(electronPath).trim(), ['.test-build/check.js', ...process.argv.slice(2)], {
   stdio: 'inherit',
-  env: { ...process.env, ELECTRON_RUN_AS_NODE: '1', FSKH_TEST_DIR: dir },
+  env: { ...process.env, ELECTRON_RUN_AS_NODE: '1', FSKH_TEST_DATA_DIR: dir },
 });
 child.on('exit', (code) => {
   rmSync(dir, { recursive: true, force: true });

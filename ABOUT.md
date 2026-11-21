@@ -75,5 +75,5 @@ folder you point it at. Updates go through the shared Updater feed.
 
 ## Current version
 
-0.6.1, from the `version` field in `package.json`; the newest `CHANGELOG.md` entry
+0.6.2, from the `version` field in `package.json`; the newest `CHANGELOG.md` entry
 agrees.

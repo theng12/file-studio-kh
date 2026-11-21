@@ -4,7 +4,7 @@
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 
-const root = process.env.FSKH_TEST_DIR ?? join(tmpdir(), 'file-studio-kh-test');
+const root = process.env.FSKH_TEST_DATA_DIR ?? join(tmpdir(), 'file-studio-kh-test');
 
 export const app = {
   getPath: (name: string): string => {

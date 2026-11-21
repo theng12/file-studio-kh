@@ -14,7 +14,7 @@ import { FileOperationService } from '../src/main/services/FileOperationService'
 import { SettingsService } from '../src/main/services/SettingsService';
 import { UpdateHoldService, guardedWork } from '../src/main/services/UpdateHoldService';
 
-const workRoot = process.env.FSKH_TEST_DIR ?? join(tmpdir(), 'file-studio-kh-test');
+const workRoot = process.env.FSKH_TEST_DATA_DIR ?? join(tmpdir(), 'file-studio-kh-test');
 
 /** One request, connection closed afterwards so nothing keeps the test process alive. */
 function call(url: string, method: string, query: string): Promise<Record<string, unknown>> {

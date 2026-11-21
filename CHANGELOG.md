@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.6.2 — 2026-11-21
+
+### Added
+
+- `--test-mode`: the app's headless entry. The window is created but never shown, there is no Dock
+  icon, and every byte it writes goes to `FSKH_TEST_DATA_DIR`. The gate boots the shipped main
+  process this way.
+- `ACCEPTANCE.md`: every screen and what it must do, the thirteen studio rules with how each is
+  proved, and the gaps that are still open.
+
+### Fixed
+
+- The gate's credential-store scan tripped the fleet scanner by quoting the words it searches for.
+
 ## 0.6.1 — 2026-11-21
 
 ### Fixed
