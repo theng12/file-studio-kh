@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.6.0] - 2026-11-21
+## 0.6.0 — 2026-11-21
 
 ### Added
 
@@ -18,7 +18,7 @@
 - `npm install` on current npm no longer leaves Electron and the native modules unbuilt
   (`allowScripts` in `package.json`).
 
-## [0.5.1] - 2026-05-23
+## 0.5.1 — 2026-05-23
 
 ### Fixed
 
@@ -26,7 +26,7 @@
 - Added duplicate cleanup previews that keep one file and move the remaining exact duplicates to `_trash`.
 - Made Advanced-generated previews open directly in Actions for review and Apply.
 
-## [0.5.0] - 2026-05-23
+## 0.5.0 — 2026-05-23
 
 ### Added
 
@@ -38,7 +38,7 @@
 - Added CSV export for scan results and operation history.
 - Added folder change watching with a Rescan now prompt.
 
-## [0.4.0] - 2026-05-23
+## 0.4.0 — 2026-05-23
 
 ### Added
 
@@ -49,14 +49,14 @@
 - Added Settings save-location picker plus a clearer About card with packaged/development status and local-build update guidance.
 - Added action previews for Normalize extension casing and Isolate by format into `_pdf`, `_png`, `_raw`, or `_other`.
 
-## [0.3.1] - 2026-05-23
+## 0.3.1 — 2026-05-23
 
 ### Added
 
 - Added a persisted Files list/grid view switch so image-heavy folders can be reviewed as thumbnail cards.
 - Added a persisted Compact/Comfort/Wide detail-panel preference so the right preview area can be expanded during review.
 
-## [0.3.0] - 2026-05-23
+## 0.3.0 — 2026-05-23
 
 ### Added
 
@@ -69,25 +69,25 @@
 - Added ignored folder names in Settings and Dashboard scan warnings for hidden files, ignored folders, `_trash`, and large scans.
 - Added action presets for saving and reusing common move, trash, rename, and sequence setups.
 
-## [0.2.5] - 2026-05-23
+## 0.2.5 — 2026-05-23
 
 ### Added
 
 - Added a user-facing README explaining what File Studio KH is for, the safe workflow, install steps, and the macOS quarantine removal command for trusted local builds.
 
-## [0.2.4] - 2026-05-23
+## 0.2.4 — 2026-05-23
 
 ### Added
 
 - Added Reveal root/folder controls to the Files folder tree so users can open the active folder in Finder before rescanning.
 
-## [0.2.3] - 2026-05-23
+## 0.2.3 — 2026-05-23
 
 ### Fixed
 
 - Added a generated macOS `.icns` app icon from the File Studio KH logo and configured packaged DMG builds to use it.
 
-## [0.2.2] - 2026-05-23
+## 0.2.2 — 2026-05-23
 
 ### Added
 
@@ -98,13 +98,13 @@
 - Fixed the What's New modal so long changelog content scrolls inside the dialog instead of overflowing past the viewport.
 - Fixed Files layout bounds so the app sidebar footer stays visible and the folder tree, file table, and preview panel scroll within the window.
 
-## [0.2.1] - 2026-05-23
+## 0.2.1 — 2026-05-23
 
 ### Added
 
 - Added the first File Studio KH logo mark with `KH` inside for the app sidebar and reusable vector asset.
 
-## [0.2.0] - 2026-05-23
+## 0.2.0 — 2026-05-23
 
 ### Added
 
@@ -113,7 +113,7 @@
 - Added Settings controls for `_trash` location: inside the selected root by default, or a custom base folder with per-root subfolders.
 - Added applied operation history with undo status and undo results.
 
-## [0.1.2] - 2026-05-23
+## 0.1.2 — 2026-05-23
 
 ### Fixed
 
@@ -121,13 +121,13 @@
 - Prevented already-trashed paths from being previewed as another trash move.
 - Clarified that action preview paths are proposed future destinations, not current moved locations.
 
-## [0.1.1] - 2026-05-23
+## 0.1.1 — 2026-05-23
 
 ### Fixed
 
 - Corrected the packaged Electron entry point so macOS DMG builds can launch the app.
 
-## [0.1.0] - 2026-05-22
+## 0.1.0 — 2026-05-22
 
 ### Added
 

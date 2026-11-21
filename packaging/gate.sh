@@ -55,7 +55,7 @@ echo "   reached app:ready, stayed out of the front, quit cleanly"
 echo "== 5/5 artifact identity =="
 VERSION=$(node -p "require('./package.json').version")
 grep -q "\"version\": \"$VERSION\"" package-lock.json || fail "package-lock.json disagrees on the version"
-grep -q "## \\[$VERSION\\]" CHANGELOG.md || fail "CHANGELOG.md has no entry for $VERSION"
+grep -q "^## $VERSION — " CHANGELOG.md || fail "CHANGELOG.md has no \"## $VERSION — <date>\" entry"
 echo "   version $VERSION agrees in package.json, package-lock.json and CHANGELOG.md"
 
 echo "GATE PASSED at $(git rev-parse --short=12 HEAD) ($(git branch --show-current))"
