@@ -1,6 +1,6 @@
 {
   "name": "file-studio-kh",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "A local-first desktop app for safely organizing messy media folders.",
   "main": "dist-electron/index.js",
   "type": "module",
@@ -19,7 +19,6 @@
   "dependencies": {
     "@vitejs/plugin-react": "^5.1.1",
     "better-sqlite3": "^12.10.0",
-    "electron-updater": "^6.6.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "sharp": "^0.34.5"

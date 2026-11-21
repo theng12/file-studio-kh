@@ -257,9 +257,13 @@ export function Settings({ info, settings, onUpdate }: SettingsProps) {
           <button
             type="button"
             className="rounded-md border border-line px-3 py-2 text-sm font-semibold hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-800"
-            onClick={() => setUpdateMessage('Local test builds are updated by installing the newest versioned DMG from the release folder.')}
+            onClick={() => setUpdateMessage(
+              info.isPackaged
+                ? 'Updates come through the Studio Updater, which reads the shared feed and installs a newer File Studio KH. The app pauses new scans and applies first, and resumes by itself.'
+                : 'This is a development build; it is not updated by the Updater.',
+            )}
           >
-            Check for updates
+            How updates work
           </button>
           {updateMessage && <div className="text-sm text-neutral-500">{updateMessage}</div>}
         </div>

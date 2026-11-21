@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.6.1 — 2026-11-21
+
+### Fixed
+
+- The About panel's "Check for updates" button told people to install a DMG from a release folder.
+  It now says where updates actually come from — the Studio Updater reading the shared feed — and
+  a development build says it is not updated that way at all.
+
+### Changed
+
+- Dropped the unused `electron-updater` dependency; the Studio Updater installs a new version.
+
 ## 0.6.0 — 2026-11-21
 
 ### Added
