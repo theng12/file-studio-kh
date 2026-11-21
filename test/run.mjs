@@ -8,7 +8,7 @@ import { join } from 'node:path';
 import electronPath from 'electron';
 
 const dir = mkdtempSync(join(tmpdir(), 'file-studio-kh-check-'));
-const child = spawn(electronPath, ['.test-build/check.js', ...process.argv.slice(2)], {
+const child = spawn(String(electronPath).trim(), ['.test-build/check.js', ...process.argv.slice(2)], {
   stdio: 'inherit',
   env: { ...process.env, ELECTRON_RUN_AS_NODE: '1', FSKH_TEST_DIR: dir },
 });

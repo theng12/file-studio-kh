@@ -4,7 +4,7 @@
 // every build fails later with ENOENT. The zip itself is fine, so re-extract it
 // with ditto. A normal install is left alone.
 import { execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { homedir, platform } from 'node:os';
 import { join } from 'node:path';
 
@@ -41,6 +41,8 @@ const dist = join(electronDir, 'dist');
 rmSync(dist, { recursive: true, force: true });
 mkdirSync(dist, { recursive: true });
 execFileSync('ditto', ['-x', '-k', zip, dist]);
+// electron/index.js reads path.txt verbatim, so no trailing newline.
+writeFileSync(join(electronDir, 'path.txt'), 'Electron.app/Contents/MacOS/Electron');
 if (!existsSync(binary)) {
   console.error(`ensure-electron: ${binary} is still missing after extracting ${zip}`);
   process.exit(1);

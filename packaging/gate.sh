@@ -27,7 +27,7 @@ echo "   built dist/ and dist-electron/"
 
 echo "== 3/5 check suite (headless, own data folder) =="
 node test/build.mjs > "$TMP/testbuild.log" 2>&1 || { tail -30 "$TMP/testbuild.log"; fail "test bundle failed"; }
-ELECTRON=$(node -p "require('electron')")
+ELECTRON=$(node -p "String(require('electron')).trim()")
 FSKH_TEST_DIR="$TMP/checks" ELECTRON_RUN_AS_NODE=1 "$ELECTRON" .test-build/check.js > "$TMP/checks.log" 2>&1 \
   || { tail -40 "$TMP/checks.log"; fail "check suite failed"; }
 grep -q "^# fail 0$" "$TMP/checks.log" || { tail -20 "$TMP/checks.log"; fail "check suite reported failures"; }
