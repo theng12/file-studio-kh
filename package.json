@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "ELECTRON_ENABLE_LOGGING=1 vite",
-    "postinstall": "electron-builder install-app-deps",
+    "postinstall": "node scripts/ensure-electron.mjs && electron-builder install-app-deps",
     "rebuild:native": "electron-builder install-app-deps",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
@@ -41,6 +41,7 @@
   "build": {
     "appId": "kh.filestudio.app",
     "productName": "File Studio KH",
+    "electronDist": "node_modules/electron/dist",
     "asar": true,
     "asarUnpack": [
       "node_modules/better-sqlite3/**/*",
