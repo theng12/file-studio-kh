@@ -22,7 +22,7 @@ test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$APP/Con
 
 ditto "$APP" "$STAGE/File Studio KH.app"
 ln -s /Applications "$STAGE/Applications"
-DMG=$(ls dist/*.dmg | head -1)
+DMG="dist/File Studio KH-$VERSION-arm64.dmg"
 # A superseded build of the same version rotates aside instead of being overwritten.
 if [ -e "$DMG" ]; then
   ROTATE="$HOME/Desktop/_trash/file-studio-kh/$(date +%Y-%m-%d) superseded"

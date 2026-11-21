@@ -44,7 +44,10 @@ for _ in $(seq 1 60); do
 done
 grep -q "app:ready" "$TMP/boot.log" || { cat "$TMP/boot.log"; fail "the app never reached app:ready"; }
 FRONT_AFTER=$(osascript -e 'tell application "System Events" to name of first process whose frontmost is true' 2>/dev/null || echo unknown)
-[ "$FRONT_BEFORE" = "$FRONT_AFTER" ] || fail "the app took the front ($FRONT_BEFORE -> $FRONT_AFTER)"
+# Other apps may come and go while this runs; what must never happen is this app taking the front.
+case "$FRONT_AFTER" in
+  *"File Studio KH"*|*Electron*) fail "the app took the front ($FRONT_BEFORE -> $FRONT_AFTER)" ;;
+esac
 kill -TERM "$BOOT_PID" 2>/dev/null || true
 for _ in $(seq 1 20); do kill -0 "$BOOT_PID" 2>/dev/null || break; sleep 0.25; done
 if kill -0 "$BOOT_PID" 2>/dev/null; then kill -KILL "$BOOT_PID"; fail "the app did not quit on SIGTERM"; fi
