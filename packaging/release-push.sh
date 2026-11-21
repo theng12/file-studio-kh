@@ -1,16 +1,20 @@
 #!/bin/bash
 # The release path: this Mac builds, 1301 publishes. Nothing here writes the feed.
 #
-#   packaging/release-push.sh <feed-app-id> <version> <dmg> <changelog>
+#   packaging/release-push.sh <feed-app-id> <version> <dmg> <changelog> [extra khu publish flags...]
 #
 # Copies the DMG and its changelog to the release host's staging folder and runs `khu publish`
 # there, then reads the served feed back and prints the version it now offers.
+# Extra flags go straight to `khu publish` — e.g. --new-app on a first publish, or
+# --name/--tagline/--description/--hold-since.
 set -euo pipefail
 HOST="${KHU_RELEASE_HOST:-vengtheng@100.82.91.102}"
 KEY="${KHU_RELEASE_KEY:-$HOME/.ssh/id_ed25519_gateway1301}"
 STAGE="${KHU_RELEASE_STAGE:-Library/KHUpdater/feed-incoming-$(date +%Y%m%d)}"
-[ $# -eq 4 ] || { echo "usage: $0 <feed-app-id> <version> <dmg> <changelog>" >&2; exit 2; }
-APP="$1"; VERSION="$2"; DMG="$3"; LOG="$4"
+[ $# -ge 4 ] || { echo "usage: $0 <feed-app-id> <version> <dmg> <changelog> [flags...]" >&2; exit 2; }
+APP="$1"; VERSION="$2"; DMG="$3"; LOG="$4"; shift 4
+EXTRA=""
+for arg in "$@"; do EXTRA+=" $(printf '%q' "$arg")"; done
 [ -f "$DMG" ] || { echo "no such DMG: $DMG" >&2; exit 2; }
 [ -f "$LOG" ] || { echo "no such changelog: $LOG" >&2; exit 2; }
 BASE=$(basename "$DMG")
@@ -24,7 +28,7 @@ scp -i "$KEY" -o BatchMode=yes "$LOG" "$HOST:$STAGE/changelogs/$APP.md"
 HOLD_ARGS="--hold-url '$KHU_HOLD_URL'"
 
 "${SSH[@]}" "K=\$HOME/Library/KHUpdater; \"\$K/bin/khu\" publish --feed \"\$K/feed\" --key \"\$K/keys/private.key\" \
-  --app '$APP' --version '$VERSION' --artifact \"\$HOME/$STAGE/$BASE\" --changelog \"\$HOME/$STAGE/changelogs/$APP.md\" $HOLD_ARGS"
+  --app '$APP' --version '$VERSION' --artifact \"\$HOME/$STAGE/$BASE\" --changelog \"\$HOME/$STAGE/changelogs/$APP.md\" $HOLD_ARGS $EXTRA"
 
 /usr/bin/python3 -I - "$HOST" "$APP" "$VERSION" "$KHU_HOLD_URL" "$DMG" <<'PY'
 import base64, hashlib, json, pathlib, sys, urllib.parse, urllib.request
