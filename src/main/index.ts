@@ -8,8 +8,12 @@ import { registerScanIpc } from './ipc/scan';
 import { registerThumbnailIpc } from './ipc/thumbnails';
 import { registerActionsIpc } from './ipc/actions';
 import { registerAdvancedIpc } from './ipc/advanced';
+import { UpdateHoldService } from './services/UpdateHoldService';
 
 process.env.ELECTRON_ENABLE_LOGGING = '1';
+
+// A gate run keeps every byte it writes inside its own throwaway folder.
+if (process.env.FSKH_TEST_DATA) app.setPath('userData', process.env.FSKH_TEST_DATA);
 
 logLifecycle('boot');
 
@@ -31,6 +35,8 @@ function createWindow(): void {
     minHeight: 680,
     title: 'File Studio KH',
     backgroundColor: '#f5f6f7',
+    // Gate runs boot the real app without ever putting a window on the owner's desktop.
+    show: process.env.FSKH_HIDDEN !== '1',
     webPreferences: {
       preload: join(projectRoot(), 'dist-electron/preload.cjs'),
       contextIsolation: true,
@@ -64,11 +70,17 @@ function createWindow(): void {
 }
 
 app.on('ready', () => {
+  // A gate run leaves no Dock icon and never comes to the front.
+  if (process.env.FSKH_HIDDEN === '1') app.dock?.hide();
   logLifecycle('app:ready');
+  UpdateHoldService.start();
   createWindow();
 });
 
-app.on('before-quit', () => logLifecycle('before-quit'));
+app.on('before-quit', () => {
+  UpdateHoldService.stop();
+  logLifecycle('before-quit');
+});
 
 app.on('child-process-gone', (_event, details) => logLifecycle('child-process-gone', details));
 

@@ -145,12 +145,55 @@ export const FileOperationService = {
     const createdAt = new Date().toISOString();
     const items: ActionApplyItem[] = [];
 
+    // The operation row is written before the first rename and every item is recorded
+    // as it happens, so an apply interrupted mid-run (an update, a crash, a power cut)
+    // is still listed in History and can still be undone.
+    const insertItem = db.prepare(`
+      INSERT INTO action_operation_items (
+        id, operation_id, file_id, original_path, target_path, status, message
+      )
+      VALUES (
+        @id, @operationId, @fileId, @originalPath, @targetPath, @status, @message
+      )
+    `);
+    const recount = db.prepare(`
+      UPDATE action_operations
+      SET applied_count = (SELECT COUNT(*) FROM action_operation_items WHERE operation_id = @id AND status = 'applied'),
+          failed_count = (SELECT COUNT(*) FROM action_operation_items WHERE operation_id = @id AND status = 'failed'),
+          skipped_count = (SELECT COUNT(*) FROM action_operation_items WHERE operation_id = @id AND status = 'skipped')
+      WHERE id = @id
+    `);
+    const record = db.transaction((entry: ActionApplyItem) => {
+      insertItem.run({
+        id: crypto.randomUUID(),
+        operationId,
+        fileId: entry.fileId,
+        originalPath: entry.originalPath,
+        targetPath: entry.targetPath,
+        status: entry.status,
+        message: entry.message,
+      });
+      recount.run({ id: operationId });
+    });
+    const push = (entry: ActionApplyItem): void => {
+      items.push(entry);
+      record(entry);
+    };
+
+    db.prepare(`
+      INSERT INTO action_operations (
+        id, preview_id, created_at, root_path, operation_type,
+        applied_count, failed_count, skipped_count, undo_status
+      )
+      VALUES (?, ?, ?, ?, ?, 0, 0, 0, 'not_undone')
+    `).run(operationId, previewId, createdAt, preview.root_path, preview.operation_type);
+
     for (const item of previewItems) {
       const originalPath = normalize(join(preview.root_path, item.original_relative_path));
       let targetPath: string | null = null;
 
       if (item.status !== 'ready' || !item.proposed_relative_path) {
-        items.push({
+        push({
           fileId: item.file_id,
           originalPath,
           targetPath: null,
@@ -173,7 +216,7 @@ export const FileOperationService = {
         await mkdir(dirname(targetPath), { recursive: true });
         await rename(originalPath, targetPath);
 
-        items.push({
+        push({
           fileId: item.file_id,
           originalPath,
           targetPath,
@@ -181,7 +224,7 @@ export const FileOperationService = {
           message: null,
         });
       } catch (error) {
-        items.push({
+        push({
           fileId: item.file_id,
           originalPath,
           targetPath,
@@ -202,50 +245,6 @@ export const FileOperationService = {
       skippedCount: items.filter((item) => item.status === 'skipped').length,
       items,
     };
-
-    const insertOperation = db.prepare(`
-      INSERT INTO action_operations (
-        id, preview_id, created_at, root_path, operation_type,
-        applied_count, failed_count, skipped_count, undo_status
-      )
-      VALUES (
-        @id, @previewId, @createdAt, @rootPath, @operationType,
-        @appliedCount, @failedCount, @skippedCount, 'not_undone'
-      )
-    `);
-    const insertItem = db.prepare(`
-      INSERT INTO action_operation_items (
-        id, operation_id, file_id, original_path, target_path, status, message
-      )
-      VALUES (
-        @id, @operationId, @fileId, @originalPath, @targetPath, @status, @message
-      )
-    `);
-
-    db.transaction(() => {
-      insertOperation.run({
-        id: result.operationId,
-        previewId: result.previewId,
-        createdAt: result.createdAt,
-        rootPath: result.rootPath,
-        operationType: result.operationType,
-        appliedCount: result.appliedCount,
-        failedCount: result.failedCount,
-        skippedCount: result.skippedCount,
-      });
-
-      for (const item of result.items) {
-        insertItem.run({
-          id: crypto.randomUUID(),
-          operationId,
-          fileId: item.fileId,
-          originalPath: item.originalPath,
-          targetPath: item.targetPath,
-          status: item.status,
-          message: item.message,
-        });
-      }
-    })();
 
     await writeProjectLocalLog(result);
 

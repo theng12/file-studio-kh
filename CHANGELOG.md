@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.6.0] - 2026-11-21
+
+### Added
+
+- Joined the studio family: `ABOUT.md`, `AGENTS.md`, a headless check suite, a gate, and the shared
+  Updater feed with its release scripts.
+- Loopback update hold at `127.0.0.1:8651` so an install pauses new scans and applies, settles what
+  is running within its window, and resumes by itself.
+- An apply is recorded per file as it runs, so an interrupted apply is still listed in History and
+  can still be undone.
+
+### Fixed
+
+- Save preset opened a native prompt, which does nothing in a packaged app. It now asks in an
+  in-app dialog and replaces a preset with the same name instead of adding a second copy.
+- `npm install` on current npm no longer leaves Electron and the native modules unbuilt
+  (`allowScripts` in `package.json`).
+
 ## [0.5.1] - 2026-05-23
 
 ### Fixed

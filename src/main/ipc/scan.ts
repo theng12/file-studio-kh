@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron';
 import { FSWatcher, watch } from 'node:fs';
 import { ScanService } from '../services/ScanService';
+import { guardedWork } from '../services/UpdateHoldService';
 import type { FileListQuery, ScannedFile } from '../../shared/types/app';
 
 let watcher: FSWatcher | null = null;
@@ -8,9 +9,9 @@ let lastWatchEventAt = 0;
 
 export function registerScanIpc(): void {
   ipcMain.handle('scan:start', (event, rootPath: string) =>
-    ScanService.start(rootPath, (progress) => {
+    guardedWork('scan', () => ScanService.start(rootPath, (progress) => {
       event.sender.send('scan:progress', progress);
-    }),
+    })),
   );
   ipcMain.handle('scan:cancel', (_event, batchId: string) => ScanService.cancel(batchId));
   ipcMain.handle('scan:getSummary', (_event, batchId?: string) => ScanService.getSummary(batchId));

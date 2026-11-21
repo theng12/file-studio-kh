@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { RouteId } from '../App';
 import type { ActionApplyResult, ActionPreviewOperation, ActionPreviewResult, RecentRoot, ScanSummary } from '../../shared/types/app';
 import { useI18n } from '../i18n';
+import { Modal } from '../components/Modal';
 
 interface ActionsProps {
   activeRoot: RecentRoot | null;
@@ -54,6 +55,8 @@ export function Actions({ activeRoot, scanSummary, selectedFileIds, initialPrevi
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [presets, setPresets] = useState<ActionPreset[]>([]);
+  const [presetDialog, setPresetDialog] = useState(false);
+  const [presetName, setPresetName] = useState('');
 
   useEffect(() => {
     try {
@@ -126,12 +129,14 @@ export function Actions({ activeRoot, scanSummary, selectedFileIds, initialPrevi
   }
 
   function saveCurrentPreset(): void {
-    const name = window.prompt('Preset name');
-    if (!name?.trim()) return;
+    const name = presetName.trim();
+    if (!name) return;
     savePresets([
-      { id: crypto.randomUUID(), name: name.trim(), operation: operation() },
-      ...presets,
+      { id: crypto.randomUUID(), name, operation: operation() },
+      ...presets.filter((item) => item.name !== name),
     ].slice(0, 24));
+    setPresetDialog(false);
+    setPresetName('');
   }
 
   async function buildPreview(): Promise<void> {
@@ -307,7 +312,13 @@ export function Actions({ activeRoot, scanSummary, selectedFileIds, initialPrevi
             <button
               type="button"
               className="rounded-md border border-line px-3 py-2 text-sm font-semibold hover:bg-white dark:border-neutral-700 dark:hover:bg-neutral-900"
-              onClick={saveCurrentPreset}
+              onClick={() => {
+                setPresetName(() => {
+                  const existing = presets.find((item) => item.operation.type === operationType);
+                  return existing ? existing.name : '';
+                });
+                setPresetDialog(true);
+              }}
             >
               Save preset
             </button>
@@ -484,6 +495,42 @@ export function Actions({ activeRoot, scanSummary, selectedFileIds, initialPrevi
           </div>
         </section>
       )}
+
+      <Modal title="Save action preset" open={presetDialog} onClose={() => setPresetDialog(false)}>
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            saveCurrentPreset();
+          }}
+        >
+          <label className="text-sm font-semibold" htmlFor="presetName">Name this preset</label>
+          <p className="mt-1 text-sm text-neutral-500">It saves the current operation and its settings, not the selected files.</p>
+          <input
+            id="presetName"
+            autoFocus
+            className="mt-2 h-9 w-full rounded-md border border-line bg-white px-3 text-sm dark:border-neutral-700 dark:bg-neutral-950"
+            value={presetName}
+            onChange={(event) => setPresetName(event.target.value)}
+            placeholder="Example: Product shots to trash"
+          />
+          <div className="mt-4 flex justify-end gap-2">
+            <button
+              type="button"
+              className="rounded-md border border-line px-3 py-2 text-sm font-semibold dark:border-neutral-700"
+              onClick={() => setPresetDialog(false)}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="rounded-md bg-accent px-3 py-2 text-sm font-semibold text-white disabled:opacity-60"
+              disabled={!presetName.trim()}
+            >
+              Save preset
+            </button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 }

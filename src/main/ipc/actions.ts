@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron';
 import { ActionPreviewService } from '../services/ActionPreviewService';
 import { FileOperationService } from '../services/FileOperationService';
+import { guardedWork } from '../services/UpdateHoldService';
 import type { ActionPreviewRequest } from '../../shared/types/app';
 
 export function registerActionsIpc(): void {
@@ -17,7 +18,7 @@ export function registerActionsIpc(): void {
     ActionPreviewService.revalidatePreview(previewId),
   );
   ipcMain.handle('actions:applyPreview', (_event, previewId: string) =>
-    FileOperationService.applyPreview(previewId),
+    guardedWork('apply', () => FileOperationService.applyPreview(previewId)),
   );
   ipcMain.handle('actions:listOperations', (_event, limit?: number) =>
     FileOperationService.listOperations(limit),
@@ -26,6 +27,6 @@ export function registerActionsIpc(): void {
     FileOperationService.getOperation(operationId),
   );
   ipcMain.handle('actions:undoOperation', (_event, operationId: string) =>
-    FileOperationService.undoOperation(operationId),
+    guardedWork('undo', () => FileOperationService.undoOperation(operationId)),
   );
 }
