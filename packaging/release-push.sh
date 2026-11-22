@@ -27,7 +27,7 @@ scp -i "$KEY" -o BatchMode=yes "$LOG" "$HOST:$STAGE/changelogs/$APP.md"
 : "${KHU_HOLD_URL:?KHU_HOLD_URL is required: set it to the fixed loopback hold endpoint}"
 HOLD_ARGS="--hold-url '$KHU_HOLD_URL'"
 
-"${SSH[@]}" "K=\$HOME/Library/KHUpdater; \"\$K/bin/khu\" publish --feed \"\$K/feed\" --key \"\$K/keys/private.key\" \
+"${SSH[@]}" "K=\$HOME/Library/KHUpdater; B=\"\$K/base/current/khu\"; [ -x \"\$B\" ] || { echo \"refused: no current khu at \$B\" >&2; exit 3; }; \"\$B\" publish --feed \"\$K/feed\" --key \"\$K/keys/private.key\" \
   --app '$APP' --version '$VERSION' --artifact \"\$HOME/$STAGE/$BASE\" --changelog \"\$HOME/$STAGE/changelogs/$APP.md\" $HOLD_ARGS $EXTRA"
 
 /usr/bin/python3 -I - "$HOST" "$APP" "$VERSION" "$KHU_HOLD_URL" "$DMG" <<'PY'
