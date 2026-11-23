@@ -58,6 +58,16 @@ Signing`, `TeamIdentifier=not set`.
   `length 145365632`; `scripts/verify-appcast.swift` over the **anonymously downloaded** DMG →
   **SIGNATURE OK**.
 
+## Publish path (Sparkle-only app)
+
+File Studio KH is a **Sparkle-only** app: its self-update path is the GitHub Pages appcast
+(`docs/appcast.xml`) plus the GitHub release asset — **not** the KH `release.json` feed that
+`release-preflight.sh` targets, so `--scan-receipt` and `--gate-line` are **not** requirements here.
+The normal path is `gh release create` + `scripts/make-appcast.mjs` + a Pages deploy (push to `main`
+under `docs/`). An app can sit on **both** surfaces at once — its own appcast for self-update and the
+KH Launcher feed for the card. Those are **two artefacts of one release, not two releases**, and both
+name the same bytes.
+
 ## 0.6.4 disposition
 
 **Fix-forward, not a retraction.** 0.6.4's GitHub release **stays published**; what moves is the
