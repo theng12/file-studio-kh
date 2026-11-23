@@ -4,5 +4,5 @@
   "type": "utility",
   "tagline": "Scan a messy folder, preview bulk actions, and apply only what you confirm — trash, never delete.",
   "description": "A local-first macOS app for organising folders that already exist on your Mac: scan, filter, preview bulk moves, renames and trashing, then apply only the rows you confirm. Nothing leaves the folder and nothing is deleted — \"delete\" moves files into _trash.",
-  "localFile": "File Studio KH-0.6.4-arm64.dmg"
+  "localFile": "File Studio KH-0.6.5-arm64.dmg"
 }

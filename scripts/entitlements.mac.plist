@@ -2,9 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-  <!-- The shim links Sparkle.framework, which is signed separately from this app; the hardened
-       runtime's library validation would refuse to load it. Required before Sparkle integration
-       (Developer - Utilities, 2026-11-23). -->
+  <!-- Electron's required runtime entitlements. A custom entitlements file REPLACES electron-builder's
+       default; omitting these drops JIT and V8 traps at isolate init (observed: 0.6.4 SIGTRAP,
+       v8::Isolate::Initialize). Keep all three. -->
+  <key>com.apple.security.cs.allow-jit</key>
+  <true/>
+  <key>com.apple.security.cs.allow-unsigned-executable-memory</key>
+  <true/>
+  <!-- The shim links Sparkle.framework, signed separately from this app; library validation would
+       refuse to load it. (Also in electron-builder's default, but named here so it is deliberate.) -->
   <key>com.apple.security.cs.disable-library-validation</key>
   <true/>
 </dict>

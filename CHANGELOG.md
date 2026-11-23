@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.5 — 2026-11-23
+
+### Fixed
+
+- **The app starts again.** 0.6.4 added the self-update engine but its build replaced Electron's
+  required runtime entitlements, so the app quit about a second after launch (V8 traps without JIT).
+  This build restores `allow-jit` and `allow-unsigned-executable-memory` alongside the
+  library-validation setting the engine needs. Nothing else changes.
+
 ## 0.6.4 — 2026-11-23
 
 ### Added
