@@ -6,6 +6,7 @@ release/
 
 # Vendored Sparkle binaries are fetched/pinned, never committed (INTEGRATION.md §8).
 vendor/Sparkle.framework/
+vendor/khsparkle/Sparkle.framework/
 vendor/khsparkle/libkhsparkle.a
 *.log
 .test-build/

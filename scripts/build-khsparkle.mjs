@@ -20,7 +20,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const source = path.join(root, 'native', 'khsparkle', 'khsparkle-addon.c');
 const lib = path.join(root, 'vendor', 'khsparkle', 'libkhsparkle.a');
 const header = path.join(root, 'vendor', 'khsparkle', 'khsparkle.h');
-const vendor = path.join(root, 'vendor');
+const vendor = path.join(root, 'vendor', 'khsparkle');
 const outDir = path.join(root, 'dist-electron');
 const addon = path.join(outDir, 'khsparkle.node');
 

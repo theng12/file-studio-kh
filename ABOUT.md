@@ -71,9 +71,10 @@ packaging/build-dmg.sh # signed-then-ad-hoc DMG into dist/
 It is a standalone local utility. It does not use Studio Hub, GatewayKH or a job
 queue, and it holds no catalogue: Media Studio KH keeps product records and
 Library Studio KH manages an arr-stack library, while this app works on whatever
-folder you point it at. Updates go through the shared Updater feed.
+folder you point it at. Updates come from Sparkle 2 through this app's own signed
+appcast (`docs/appcast.xml` on its GitHub Pages), never a shared updater process.
 
 ## Current version
 
-0.6.2, from the `version` field in `package.json`; the newest `CHANGELOG.md` entry
+0.6.4, from the `version` field in `package.json`; the newest `CHANGELOG.md` entry
 agrees.

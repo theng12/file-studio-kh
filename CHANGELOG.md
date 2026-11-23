@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.6.4 — 2026-11-23
+
+### Added
+
+- **The app updates itself.** File Studio KH now carries Sparkle 2 through the shared KH shim.
+  Before any update check it asks its own update hold (the endpoint from 0.6.3) and checks only once
+  that hold is answered safe; it shows no update window and installs in the background. Builds are
+  signed with the local KH Studio identity, not notarized. The first build that carries this is
+  installed once by hand; later versions update in place.
+
 ## 0.6.3 — 2026-11-23
 
 ### Fixed

@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from 'electron';
 import { join } from 'node:path';
+import { createRequire } from 'node:module';
 import { logLifecycle } from './services/log';
 import { openAllowedExternal, registerAppIpc } from './ipc/app';
 import { registerSettingsIpc } from './ipc/settings';
@@ -72,12 +73,28 @@ function createWindow(): void {
   }
 }
 
+/** Start Sparkle once, from the app's own bundle. The addon and the framework live in the packaged
+ *  app only; in dev and in the gate's boot test `@executable_path/../Frameworks` is Electron's, not
+ *  ours, so nothing is loaded there. A refusal is logged with its reason, never swallowed. */
+function startSparkle(): void {
+  if (!app.isPackaged) return;
+  try {
+    const addon = join(process.resourcesPath, 'app.asar.unpacked', 'dist-electron', 'khsparkle.node');
+    const shim = createRequire(import.meta.url)(addon) as { start(): number; lastError(): string };
+    const rc = shim.start();
+    logLifecycle('kh-sparkle', rc === 0 ? 'started' : `refused rc=${rc}: ${shim.lastError()}`);
+  } catch (error) {
+    logLifecycle('kh-sparkle', error);
+  }
+}
+
 app.on('ready', () => {
   // A gate run leaves no Dock icon and never comes to the front.
   if (testMode) app.dock?.hide();
   logLifecycle('app:ready');
   UpdateHoldService.start();
   createWindow();
+  startSparkle();
 });
 
 app.on('before-quit', () => {

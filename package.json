@@ -1,6 +1,6 @@
 {
   "name": "file-studio-kh",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "A local-first desktop app for safely organizing messy media folders.",
   "main": "dist-electron/index.js",
   "type": "module",
@@ -8,7 +8,7 @@
     "dev": "ELECTRON_ENABLE_LOGGING=1 vite",
     "postinstall": "node scripts/ensure-electron.mjs && electron-builder install-app-deps",
     "rebuild:native": "electron-builder install-app-deps",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && vite build && node scripts/build-khsparkle.mjs",
     "preview": "vite preview",
     "test": "node test/build.mjs && node test/run.mjs",
     "gate": "bash packaging/gate.sh",
@@ -42,10 +42,12 @@
     "productName": "File Studio KH",
     "electronDist": "node_modules/electron/dist",
     "asar": true,
+    "afterPack": "scripts/after-pack.cjs",
     "asarUnpack": [
       "node_modules/better-sqlite3/**/*",
       "node_modules/sharp/**/*",
-      "node_modules/@img/**/*"
+      "node_modules/@img/**/*",
+      "**/*.node"
     ],
     "directories": {
       "output": "dist",
@@ -64,6 +66,16 @@
       "category": "public.app-category.productivity",
       "icon": "build/icon.icns",
       "identity": "KH Studio Local Signing",
+      "hardenedRuntime": true,
+      "entitlements": "scripts/entitlements.mac.plist",
+      "entitlementsInherit": "scripts/entitlements.mac.plist",
+      "extendInfo": {
+        "SUFeedURL": "https://theng12.github.io/file-studio-kh/appcast.xml",
+        "SUPublicEDKey": "8DP3bAipkT3uu5ag1ui6A7/RDbesILT0rzau6Gty3ek=",
+        "KHHoldURL": "http://127.0.0.1:8651/api/maintenance/hold",
+        "KHHoldTokenFile": "~/Library/Application Support/file-studio-kh/hold-token",
+        "SUEnableAutomaticChecks": true
+      },
       "target": [
         {
           "target": "dmg",
