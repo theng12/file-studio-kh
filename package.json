@@ -1,6 +1,6 @@
 {
   "name": "file-studio-kh",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "A local-first desktop app for safely organizing messy media folders.",
   "main": "dist-electron/index.js",
   "type": "module",

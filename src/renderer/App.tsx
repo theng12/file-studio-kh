@@ -54,6 +54,7 @@ export default function App() {
   const [manualWhatsNewOpen, setManualWhatsNewOpen] = useState(false);
   const [autoWhatsNewOpen, setAutoWhatsNewOpen] = useState(false);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const [updateHoldFault, setUpdateHoldFault] = useState<string | null>(null);
 
   useEffect(() => {
     void window.api.app.getInfo().then((next) => {
@@ -82,6 +83,12 @@ export default function App() {
       } catch {
         // First run has no scan summary yet.
       }
+    });
+  }, []);
+
+  useEffect(() => {
+    void window.api.app.getUpdateHoldStatus().then((status) => {
+      setUpdateHoldFault(status.tokenFault);
     });
   }, []);
 
@@ -271,6 +278,15 @@ export default function App() {
             <div className="flex items-center justify-between gap-4">
               <span className="truncate">{scanProgress.message}: {scanProgress.currentPath}</span>
               <span className="shrink-0">{scanProgress.fileCount.toLocaleString()} {translate(settings?.uiLanguage, 'files')} / {scanProgress.folderCount.toLocaleString()} {translate(settings?.uiLanguage, 'folders')}</span>
+            </div>
+          </div>
+        )}
+
+        {updateHoldFault && (
+          <div className="border-b border-line bg-rose-50 px-7 py-2 text-sm text-rose-950 dark:border-neutral-800 dark:bg-rose-950 dark:text-rose-100">
+            <div className="flex items-center justify-between gap-4">
+              <span className="truncate">Updates are blocked: {updateHoldFault}</span>
+              <span className="shrink-0 text-rose-800 dark:text-rose-200">Fix the update key file and reopen the app.</span>
             </div>
           </div>
         )}

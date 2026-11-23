@@ -17,6 +17,10 @@
  */
 
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
+import { existsSync, lstatSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { homedir } from 'node:os';
+import { app } from 'electron';
 
 const DEFAULT_TIMEOUT_S = 20;
 const MAX_TIMEOUT_S = 30;
@@ -27,6 +31,86 @@ const SETTLE_POLL_MS = 200;
 /** This app's own hold port, distinct from every other studio's (8642-8649, 13181). */
 const HOLD_PORT = 8651;
 const HOLD_PATH = '/api/maintenance/hold';
+
+/**
+ * The Launcher/installer credential (§2d): this app's own 0600 file holding 64 hex characters,
+ * read fresh on every request. `KHU_HOLD_TOKEN_FILE` overrides the path for headless checks.
+ */
+const TOKEN_ENV = 'KHU_HOLD_TOKEN_FILE';
+
+export function holdTokenPath(): string {
+  const override = process.env[TOKEN_ENV]?.trim();
+  return override ? override : join(app.getPath('userData'), 'hold-token');
+}
+
+/** Why the token cannot be trusted, as words the app can print; `null` when it is usable. */
+export function holdTokenFault(path = holdTokenPath()): string | null {
+  let meta;
+  try {
+    meta = lstatSync(path);
+  } catch {
+    return 'The update key file is missing.';
+  }
+  if (meta.isSymbolicLink()) return 'The update key file is a symlink.';
+  if (!meta.isFile()) return 'The update key is not a regular file.';
+  if (meta.size > 512) return 'The update key file is oversized.';
+  if ((meta.mode & 0o077) !== 0) {
+    return `The update key file is readable or writable by other users (mode ${(meta.mode & 0o777).toString(8).padStart(3, '0')}); it must be 600.`;
+  }
+  let raw: string;
+  try {
+    raw = readFileSync(path, 'utf8');
+  } catch {
+    return 'The update key file cannot be read.';
+  }
+  const token = raw.trim();
+  if (!token) return 'The update key file is empty.';
+  if (token.length !== 64 || !/^[0-9a-f]{64}$/i.test(token)) {
+    return 'The update key is not 64 hex characters.';
+  }
+  return null;
+}
+
+/** Reads the credential fresh on every request; anything the fault names fails closed. */
+export function readHoldToken(path = holdTokenPath()): string | null {
+  if (holdTokenFault(path)) return null;
+  return readFileSync(path, 'utf8').trim();
+}
+
+/** The retiring updater's token is copied here once (never overwriting, never re-creating), so the
+ *  hold works on a Mac that already has one and a deleted key cannot quietly reappear. */
+function migrateLegacyToken(): void {
+  if (process.env[TOKEN_ENV]?.trim()) return; // an explicit path is a test/override, never migrated into
+  const own = holdTokenPath();
+  if (existsSync(own)) return;
+  const legacy = join(homedir(), 'Library', 'KHUpdater', 'state', 'hold-token');
+  if (holdTokenFault(legacy)) return;
+  try {
+    mkdirSync(dirname(own), { recursive: true });
+    writeFileSync(own, readFileSync(legacy), { mode: 0o600 });
+    log(`the update key moved from ${legacy} to ${own}; the updater's copy is no longer read`);
+  } catch (error) {
+    log(`the update key could not be moved: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+
+function presentedToken(request: IncomingMessage): string | null {
+  const authorization = request.headers.authorization;
+  if (typeof authorization === 'string') {
+    const bearer = /^Bearer\s+(\S+)\s*$/i.exec(authorization);
+    if (bearer) return bearer[1];
+  }
+  const hub = request.headers['x-hub-token'];
+  const raw = Array.isArray(hub) ? hub[0] : hub;
+  return raw?.trim() || null;
+}
+
+function constantTimeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i += 1) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
 
 let server: Server | null = null;
 let pausedUntil = 0;
@@ -70,8 +154,14 @@ export const UpdateHoldService = {
     return available;
   },
 
+  /** What the UI shows: the listener state and why the key is unusable, if it is. */
+  status(): { available: boolean; tokenFault: string | null } {
+    return { available, tokenFault: holdTokenFault() };
+  },
+
   start(port = HOLD_PORT): void {
     if (server) return;
+    migrateLegacyToken();
     const app = createServer((request, response) => {
       void handle(request, response);
     });
@@ -82,7 +172,12 @@ export const UpdateHoldService = {
     // A second copy of the app failing to bind is fine: the first copy holds.
     app.listen(port, '127.0.0.1', () => {
       available = true;
-      log(`listening on 127.0.0.1:${UpdateHoldService.port() ?? port}`);
+      const fault = holdTokenFault();
+      log(
+        fault
+          ? `listening on 127.0.0.1:${UpdateHoldService.port() ?? port}, but it will refuse every request: ${fault}`
+          : `listening on 127.0.0.1:${UpdateHoldService.port() ?? port}`,
+      );
     });
     server = app;
   },
@@ -107,6 +202,25 @@ async function handle(request: IncomingMessage, response: ServerResponse): Promi
   const url = new URL(request.url ?? '/', 'http://127.0.0.1');
   if (url.pathname !== HOLD_PATH) {
     response.writeHead(404).end();
+    return;
+  }
+
+  // Never skip the check: a browser origin, an unusable key or a wrong key all fail loudly.
+  if (request.headers.origin) {
+    log('refused a request carrying a browser origin');
+    fail(response, 403, 'A browser origin is not allowed.');
+    return;
+  }
+  const expected = readHoldToken();
+  if (!expected) {
+    const fault = holdTokenFault() ?? 'The update key is unavailable.';
+    log(`refused a request: ${fault}`);
+    fail(response, 401, fault);
+    return;
+  }
+  if (!constantTimeEqual(presentedToken(request) ?? '', expected)) {
+    log('refused a request: the update key does not match');
+    fail(response, 401, 'The update key does not match.');
     return;
   }
 
@@ -160,4 +274,9 @@ function clamp(value: number, min: number, max: number): number {
 function reply(response: ServerResponse, body: Record<string, unknown>): void {
   response.writeHead(200, { 'content-type': 'application/json' });
   response.end(JSON.stringify(body));
+}
+
+function fail(response: ServerResponse, status: number, error: string): void {
+  response.writeHead(status, { 'content-type': 'application/json' });
+  response.end(JSON.stringify({ safe: false, unsettled: [], dispatch_paused_s: 0, error }));
 }

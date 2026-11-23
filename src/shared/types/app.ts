@@ -8,6 +8,11 @@ export interface AppInfo {
   isPackaged: boolean;
 }
 
+export interface UpdateHoldStatus {
+  available: boolean;
+  tokenFault: string | null;
+}
+
 export type ThemeMode = 'light' | 'dark' | 'system';
 
 export interface AppSettings {

@@ -1,10 +1,11 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import type { ActionApplyResult, ActionOperationDetail, ActionOperationHistoryItem, ActionPreviewHistoryItem, ActionPreviewRequest, ActionPreviewResult, ActionUndoResult, AppInfo, AppSettings, CacheStats, DuplicateGroup, FileListQuery, FileListResult, FilenameSuggestion, FolderTreeItem, NearDuplicateGroup, ProductCodeGroup, RecentRoot, ScannedFile, ScanProgress, ScanSummary, TagSummary } from '../shared/types/app';
+import type { ActionApplyResult, ActionOperationDetail, ActionOperationHistoryItem, ActionPreviewHistoryItem, ActionPreviewRequest, ActionPreviewResult, ActionUndoResult, AppInfo, AppSettings, CacheStats, DuplicateGroup, FileListQuery, FileListResult, FilenameSuggestion, FolderTreeItem, NearDuplicateGroup, ProductCodeGroup, RecentRoot, ScannedFile, ScanProgress, ScanSummary, TagSummary, UpdateHoldStatus } from '../shared/types/app';
 
 const api = {
   app: {
     getInfo: (): Promise<AppInfo> => ipcRenderer.invoke('app:getInfo'),
     openExternal: (url: string): Promise<void> => ipcRenderer.invoke('app:openExternal', url),
+    getUpdateHoldStatus: (): Promise<UpdateHoldStatus> => ipcRenderer.invoke('app:getUpdateHoldStatus'),
   },
   settings: {
     get: (): Promise<AppSettings> => ipcRenderer.invoke('settings:get'),

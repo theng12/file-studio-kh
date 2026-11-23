@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.6.3 — 2026-11-23
+
+### Fixed
+
+- **The update hold only trusts a properly protected key.** The pause endpoint used to answer any
+  local caller, so any process on the Mac could hold or resume the app. It now reads this app's own
+  key file and refuses unless it is readable by you alone (mode 600) and is exactly 64 hex
+  characters. A missing, wrongly-permissioned, wrong-length, non-hex or mismatched key is refused
+  with a plain reason — on the endpoint and in a banner in the app — never skipped.
+
 ## 0.6.2 — 2026-11-21
 
 ### Added

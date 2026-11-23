@@ -1,5 +1,6 @@
 import { app, ipcMain, shell } from 'electron';
-import type { AppInfo } from '../../shared/types/app';
+import type { AppInfo, UpdateHoldStatus } from '../../shared/types/app';
+import { UpdateHoldService } from '../services/UpdateHoldService';
 
 const ALLOWED_EXTERNAL_HOSTS = new Set(['nowpayments.io']);
 
@@ -32,4 +33,6 @@ export function registerAppIpc(): void {
   }));
 
   ipcMain.handle('app:openExternal', (_event, url: string) => openAllowedExternal(url));
+
+  ipcMain.handle('app:getUpdateHoldStatus', (): UpdateHoldStatus => UpdateHoldService.status());
 }
