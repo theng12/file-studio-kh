@@ -34,6 +34,13 @@ codesign --sign - "$DMG"
 codesign --verify --strict "$DMG"
 hdiutil verify "$DMG"
 
+# The packaged app must actually launch. The gate's boot runs dev Electron and cannot see this:
+# 0.6.4 died in V8 ~1s after launch on a green gate (rows 20261123-170/171). Blocking.
+LAUNCH_CHECK="${KH_LAUNCH_CHECK:-/Users/vengtheng/Developer/_orchestra/tools/pinned/install-launch-check-e1a4850e0c342d3e.sh}"
+[ -x "$LAUNCH_CHECK" ] || { echo "launch check missing at $LAUNCH_CHECK (set KH_LAUNCH_CHECK)" >&2; exit 1; }
+bash "$LAUNCH_CHECK" "$DMG" "File Studio KH" \
+  || { echo "the packaged app did not launch (install-launch-check) — refusing to keep this DMG" >&2; exit 1; }
+
 # All KH apps are public: no key, token, owner email or network address inside the artifact.
 MOUNT=$(mktemp -d -t file-studio-mount)
 hdiutil attach "$DMG" -mountpoint "$MOUNT" -nobrowse -readonly >/dev/null
