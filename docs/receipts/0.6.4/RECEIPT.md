@@ -5,6 +5,11 @@
 > (replacing the default template). Gate was green; the pinned `install-launch-check` caught it on the
 > DMG. **Superseded by 0.6.5** (entitlements restored). "Published and feed-verified" was true;
 > "launches" was not. See `lead/0.6.4/INCIDENT.md`.
+>
+> Cross-reference (U001, 2026-11-23): this crash report also failed **Gateway 0.2.305's** gate
+> (`20261123-174`) — the launch check collects every report in its 10 s window, not only the app under
+> test. Gateway is not File's to fix; recorded here so the reference is traceable, not a mystery in
+> Gateway's history.
 
 Tracked copy, sanitised so a stranger can reproduce it from a clean checkout. Paths are `$HOME`- or
 repo-relative; values that would need a path are given as hashes; no token, key or owner path appears.
