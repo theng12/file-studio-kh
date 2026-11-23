@@ -60,10 +60,13 @@ Signing`, `TeamIdentifier=not set`.
 
 ## 0.6.4 disposition
 
-Superseded. It crashes on launch and was never auto-installed by anyone: the self-update engine arrives
-only *with* 0.6.4, so 0.6.3 and earlier carry no shim and no `SUFeedURL` and were not listening. The
-0.6.4 release body is edited to "published, superseded, do not install"; the appcast now serves 0.6.5.
-The 0.6.4 DMG is kept as restorable evidence (it is the crash artifact).
+**Fix-forward, not a retraction.** 0.6.4's GitHub release **stays published**; what moves is the
+**card**, because the feed producer projects `releases/latest`, which now resolves to 0.6.5. 0.6.4
+crashes on launch and was never auto-installed by anyone: the self-update engine arrives only *with*
+0.6.4, so 0.6.3 and earlier carry no shim and no `SUFeedURL` and were not listening. The 0.6.4 release
+**body** is additionally edited to "superseded / do not install" so a person arriving from an old link
+does not read a body that looks current. The 0.6.4 DMG is kept as restorable evidence (the crash
+artifact).
 
 ## Lane record
 
