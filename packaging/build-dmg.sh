@@ -33,6 +33,11 @@ hdiutil create -volname "File Studio KH $VERSION" -srcfolder "$STAGE" -format UD
 codesign --sign - "$DMG"
 codesign --verify --strict "$DMG"
 hdiutil verify "$DMG"
+# A concurrent reader can catch the image mid-write (a peer saw 93 MB of this 145 MB file). Every
+# step above is blocking and hdiutil verify says VALID, so the image is complete — assert it with two
+# stable size+mtime reads before anything downstream measures or uploads it.
+S1=$(stat -f '%z:%m' "$DMG"); sleep 1; S2=$(stat -f '%z:%m' "$DMG")
+[ "$S1" = "$S2" ] || { echo "DMG still being written ($S1 -> $S2) — refusing to measure a partial image" >&2; exit 1; }
 
 # The packaged app must actually launch. The gate's boot runs dev Electron and cannot see this:
 # 0.6.4 died in V8 ~1s after launch on a green gate (rows 20261123-170/171). Blocking.
