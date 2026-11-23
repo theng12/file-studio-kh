@@ -1,0 +1,7 @@
+{
+  "name": "File Studio KH",
+  "bundle_id": "kh.filestudio.app",
+  "type": "utility",
+  "tagline": "Scan a messy folder, preview bulk actions, and apply only what you confirm — trash, never delete.",
+  "description": "A local-first macOS app for organising folders that already exist on your Mac: scan, filter, preview bulk moves, renames and trashing, then apply only the rows you confirm. Nothing leaves the folder and nothing is deleted — \"delete\" moves files into _trash."
+}
