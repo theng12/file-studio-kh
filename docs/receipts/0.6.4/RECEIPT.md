@@ -1,5 +1,11 @@
 # Release receipt — File Studio KH 0.6.4
 
+> **INCIDENT (2026-11-23): this 0.6.4 build crashes ~1 s after launch** — `EXC_BREAKPOINT/SIGTRAP` at
+> `v8::Isolate::Initialize`, because its custom entitlements plist dropped Electron's `allow-jit`
+> (replacing the default template). Gate was green; the pinned `install-launch-check` caught it on the
+> DMG. **Superseded by 0.6.5** (entitlements restored). "Published and feed-verified" was true;
+> "launches" was not. See `lead/0.6.4/INCIDENT.md`.
+
 Tracked copy, sanitised so a stranger can reproduce it from a clean checkout. Paths are `$HOME`- or
 repo-relative; values that would need a path are given as hashes; no token, key or owner path appears.
 Bulk evidence (gate/build logs, downloaded DMGs) stays untracked.
