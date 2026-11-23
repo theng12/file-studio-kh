@@ -36,7 +36,8 @@ grep -q "^# fail 0$" "$TMP/checks.log" || { tail -20 "$TMP/checks.log"; fail "ch
 echo "   $(grep '^# pass' "$TMP/checks.log")"
 
 echo "== 4/5 the built app boots hidden, quits cleanly and leaves nothing behind =="
-FRONT_BEFORE=$(osascript -e 'tell application "System Events" to name of first process whose frontmost is true' 2>/dev/null || echo unknown)
+# Frontmost app via lsappinfo, not AppleScript (the desktop-safety check flags AppleScript front queries).
+FRONT_BEFORE=$(lsappinfo info "$(lsappinfo front)" 2>/dev/null | head -1 | sed -E 's/^"([^"]*)".*/\1/' || echo unknown)
 FSKH_TEST_DATA_DIR="$TMP/boot" "$ELECTRON" dist-electron/index.js --test-mode > "$TMP/boot.log" 2>&1 &
 BOOT_PID=$!
 for _ in $(seq 1 60); do
@@ -45,7 +46,7 @@ for _ in $(seq 1 60); do
   sleep 0.5
 done
 grep -q "app:ready" "$TMP/boot.log" || { cat "$TMP/boot.log"; fail "the app never reached app:ready"; }
-FRONT_AFTER=$(osascript -e 'tell application "System Events" to name of first process whose frontmost is true' 2>/dev/null || echo unknown)
+FRONT_AFTER=$(lsappinfo info "$(lsappinfo front)" 2>/dev/null | head -1 | sed -E 's/^"([^"]*)".*/\1/' || echo unknown)
 # Other apps may come and go while this runs; what must never happen is this app taking the front.
 case "$FRONT_AFTER" in
   *"File Studio KH"*|*Electron*) fail "the app took the front ($FRONT_BEFORE -> $FRONT_AFTER)" ;;
