@@ -56,4 +56,5 @@ packaging/build-dmg.sh # DMG into dist/
 - `src/renderer/` — React pages and components; `i18n.tsx` holds the English/Khmer strings.
 - `src/shared/types/app.ts` — the types both sides share.
 - `test/` — `check.ts` (the suite), `electron-stub.ts` (stands in for `electron` headless).
-- `packaging/` — `gate.sh`, `build-dmg.sh`, `release-push.sh`, `page-sync.sh`.
+- `packaging/` — `gate.sh`, `build-dmg.sh`, `release-push.sh`. (`page-sync.sh` was retired 2026-11-23:
+  `kh-releases` is feed-only, RELEASE-POLICY §0 superseded / §2b.)
