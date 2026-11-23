@@ -6,19 +6,19 @@
     <description>File Studio KH updates</description>
     <language>en</language>
     <item>
-      <title>Version 0.6.3</title>
-      <pubDate>Mon, 23 Nov 2026 12:28:15 GMT</pubDate>
-      <sparkle:version>0.6.3</sparkle:version>
-      <sparkle:shortVersionString>0.6.3</sparkle:shortVersionString>
+      <title>Version 0.6.4</title>
+      <pubDate>Mon, 23 Nov 2026 14:56:29 GMT</pubDate>
+      <sparkle:version>0.6.4</sparkle:version>
+      <sparkle:shortVersionString>0.6.4</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>12.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[<pre>Fixed
-• **The update hold only trusts a properly protected key.** The pause endpoint used to answer any
-  local caller, so any process on the Mac could hold or resume the app. It now reads this app's own
-  key file and refuses unless it is readable by you alone (mode 600) and is exactly 64 hex
-  characters. A missing, wrongly-permissioned, wrong-length, non-hex or mismatched key is refused
-  with a plain reason — on the endpoint and in a banner in the app — never skipped.</pre>]]></description>
-      <enclosure url="https://github.com/theng12/file-studio-kh/releases/download/0.6.3/File.Studio.KH-0.6.3-arm64.dmg"
-                 length="143896325" type="application/octet-stream" sparkle:edSignature="/otO+/wbtE/1OopjcfB/HYeSel8d5iRP+yT01YYV8YmdCP7CeCMkbBmLsBvnA4gGbefxbQfcK/lguea0uAZbCw=="/>
+      <description><![CDATA[<pre>Added
+• **The app updates itself.** File Studio KH now carries Sparkle 2 through the shared KH shim.
+  Before any update check it asks its own update hold (the endpoint from 0.6.3) and checks only once
+  that hold is answered safe; it shows no update window and installs in the background. Builds are
+  signed with the local KH Studio identity, not notarized. The first build that carries this is
+  installed once by hand; later versions update in place.</pre>]]></description>
+      <enclosure url="https://github.com/theng12/file-studio-kh/releases/download/0.6.4/File.Studio.KH-0.6.4-arm64.dmg"
+                 length="144327763" type="application/octet-stream" sparkle:edSignature="7G+zSHOBEbnpPWkXwCW0rtNFPS7tKLC1J3AbUxBF7+gFIOvYF9G4ZOHRisoizFldBu+17/VtNVLf1j3Xq18CCw=="/>
     </item>
   </channel>
 </rss>
