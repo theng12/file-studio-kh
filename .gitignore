@@ -4,10 +4,11 @@ dist-electron/
 release/
 .DS_Store
 
-# Vendored Sparkle binaries are fetched/pinned, never committed (INTEGRATION.md §8).
+# The Sparkle framework is fetched/pinned by sha (INTEGRATION.md §8). The shim library is NOT in any
+# public release, so it IS tracked — an untracked build input means the tag cannot reproduce the build
+# (row 160). `vendor/khsparkle/libkhsparkle.a` is committed beside VENDOR.md and khsparkle.h.
 vendor/Sparkle.framework/
 vendor/khsparkle/Sparkle.framework/
-vendor/khsparkle/libkhsparkle.a
 *.log
 .test-build/
 dist-renderer/
