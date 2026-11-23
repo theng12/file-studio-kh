@@ -28,7 +28,8 @@ A green gate never replaces the last line: the click has to work in the shipped 
 5. Reopen: the app is not a menu-bar app, but `app.on('activate')` recreates the window.
 6. No renames are planned; if one happens, bundle id, data folder, feed id and icon move together.
 7. No Keychain: the app stores no credentials at all.
-8. A publish is proven by reading the served feed back from 1301 — `release-push.sh` does it and
+8. A publish is proven by reading the served feed back from 1301 — the canonical `release-push.sh`
+   (`update-studio-kh/app/packaging/release-push.sh`) does it and
    re-hashes the served artifact.
 9. Tests never take the owner's desktop: `--test-mode` boots the app with no window and no Dock
    icon in its own data folder, and the gate fails if this app becomes the frontmost process.

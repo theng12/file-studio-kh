@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Builds the DMG this app ships from: signed, verified, leak-scanned, and kept beside
-# the previous one. Publishing is a separate step (packaging/release-push.sh).
+# the previous one. Publishing is a separate step (the canonical release-push.sh in update-studio-kh).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 unset ELECTRON_RUN_AS_NODE
