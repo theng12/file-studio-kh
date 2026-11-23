@@ -56,6 +56,12 @@ package.json, package-lock.json, CHANGELOG.md).
 - Sparkle `2.10.1` (build 2065) framework binary sha256
   `9c78b2046e763efeb8ca505d63170bc1557651925dbbfd45ac236845732b05a`.
 
+**Reproducibility note (row 160):** `libkhsparkle.a` is now **tracked** at
+`vendor/khsparkle/libkhsparkle.a` (from `0b29a49`), so `git ls-tree -r <tag>` proves the build input.
+The **0.6.4 tag (`f86ba18`) predates tracking**, so that tag alone cannot reproduce the library —
+0.6.5 and later, cut from a commit at/after `0b29a49`, will be fully reproducible. The framework is
+tracked-by-pin, not committed (it ships publicly at the sha above).
+
 ## Feed readback
 
 - GitHub release `0.6.4` (non-draft), asset `File.Studio.KH-0.6.4-arm64.dmg`: anonymous GET **200**,
