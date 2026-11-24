@@ -9,7 +9,6 @@ import {
   IconHistory,
   IconLogo,
   IconSettings,
-  IconSparkles,
 } from './icons';
 import { useI18n } from '../i18n';
 
@@ -101,13 +100,17 @@ export function Sidebar({ activeRoute, appVersion, onNavigate, onOpenWhatsNew }:
             label={t('supportThisApp')}
             onClick={() => onNavigate('support')}
           />
-          <SidebarButton
-            icon={IconSparkles}
-            label={t('whatsNew')}
-            onClick={onOpenWhatsNew}
-          />
         </div>
-        <div className="mt-3 px-3 text-xs text-neutral-500">v{appVersion}</div>
+        <button
+          type="button"
+          className="mt-3 flex w-full items-center justify-between gap-2 rounded-full border border-line px-3 py-1.5 text-xs font-semibold text-neutral-700 hover:bg-neutral-100 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800"
+          onClick={onOpenWhatsNew}
+          title={`${t('fileStudioKh')} v${appVersion} — ${t('whatsNew')}`}
+          aria-label={`${t('fileStudioKh')} version ${appVersion}. Open What's New.`}
+        >
+          <span className="truncate">{t('fileStudioKh')}</span>
+          <span className="shrink-0 text-neutral-500 dark:text-neutral-400">v{appVersion}</span>
+        </button>
       </div>
     </aside>
   );

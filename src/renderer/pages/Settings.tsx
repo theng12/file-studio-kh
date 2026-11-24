@@ -78,7 +78,7 @@ export function Settings({ info, settings, onUpdate }: SettingsProps) {
   return (
     <div className="space-y-5">
       <section className="rounded-lg border border-line bg-white px-5 dark:border-neutral-800 dark:bg-neutral-900">
-        <SettingRow label={t('theme')} description="Default is Light. System follows the OS setting after you choose it.">
+        <SettingRow label={t('theme')} description="New installs start on System, which follows the Mac's appearance. Light and Dark fix it explicitly.">
           <div className="inline-flex rounded-md border border-line p-1 dark:border-neutral-700">
             {(['light', 'dark', 'system'] as const).map((mode) => (
               <button

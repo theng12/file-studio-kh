@@ -40,6 +40,13 @@ const REVIEW_STATUSES: Array<{ value: ScannedFile['status']; label: string }> = 
   { value: 'trash_candidate', label: 'Trash candidate' },
   { value: 'organized', label: 'Organized' },
 ];
+const STATUS_LABELS: Record<string, string> = Object.fromEntries(REVIEW_STATUSES.map((s) => [s.value, s.label]));
+const SCAN_STATUS_LABELS: Record<string, string> = {
+  running: 'Scanning',
+  completed: 'Scan complete',
+  failed: 'Scan failed',
+  cancelled: 'Scan cancelled',
+};
 
 function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -161,6 +168,15 @@ export function Files({
   const canNext = offset + limit < total;
   const visibleIds = files.map((file) => file.id);
   const allVisibleSelected = visibleIds.length > 0 && visibleIds.every((id) => selectedSet.has(id));
+  const anyFilter = Boolean(search) || selectedFolder !== '/' || fileType !== 'all' || extension !== 'all'
+    || tag !== 'all' || reviewStatus !== 'all' || minSizeMb !== '' || maxSizeMb !== '' || modifiedAfter !== '' || modifiedBefore !== '';
+  const emptyMessage = !summary
+    ? 'No folder scanned yet — choose a folder to begin.'
+    : summary.status === 'failed' || summary.status === 'cancelled'
+      ? (summary.errorMessage ?? 'The last scan did not finish — scan again.')
+      : anyFilter
+        ? 'No files match these filters — clear filters to see everything.'
+        : 'No files found in this folder — rescan or choose another folder.';
 
   function setViewMode(next: ViewMode): void {
     setViewModeState(next);
@@ -316,6 +332,7 @@ export function Files({
           <div className="grid gap-2 md:grid-cols-6">
             <select
               className="h-9 rounded-md border border-line bg-white px-2 text-sm dark:border-neutral-700 dark:bg-neutral-950"
+              aria-label="File type"
               value={fileType}
               onChange={(event) => setFileType(event.target.value as typeof fileType)}
             >
@@ -324,6 +341,7 @@ export function Files({
             </select>
             <select
               className="h-9 rounded-md border border-line bg-white px-2 text-sm dark:border-neutral-700 dark:bg-neutral-950"
+              aria-label="Extension"
               value={extension}
               onChange={(event) => setExtension(event.target.value)}
             >
@@ -332,6 +350,7 @@ export function Files({
             </select>
             <select
               className="h-9 rounded-md border border-line bg-white px-2 text-sm dark:border-neutral-700 dark:bg-neutral-950"
+              aria-label="Tag"
               value={tag}
               onChange={(event) => setTag(event.target.value)}
             >
@@ -344,6 +363,7 @@ export function Files({
             </select>
             <select
               className="h-9 rounded-md border border-line bg-white px-2 text-sm dark:border-neutral-700 dark:bg-neutral-950"
+              aria-label="Review status"
               value={reviewStatus}
               onChange={(event) => setReviewStatus(event.target.value as typeof reviewStatus)}
             >
@@ -378,7 +398,7 @@ export function Files({
                   type="button"
                   className={`flex-1 px-3 text-sm font-semibold ${
                     viewMode === mode
-                      ? 'bg-accent text-white'
+                      ? 'bg-neutral-200 text-neutral-900 dark:bg-neutral-700 dark:text-white'
                       : 'bg-white text-neutral-600 hover:bg-neutral-50 dark:bg-neutral-950 dark:text-neutral-300 dark:hover:bg-neutral-800'
                   }`}
                   onClick={() => setViewMode(mode)}
@@ -396,6 +416,7 @@ export function Files({
               min={0}
               step={0.1}
               placeholder="Min size MB"
+              aria-label="Minimum size in MB"
               value={minSizeMb}
               onChange={(event) => setMinSizeMb(event.target.value)}
             />
@@ -405,6 +426,7 @@ export function Files({
               min={0}
               step={0.1}
               placeholder="Max size MB"
+              aria-label="Maximum size in MB"
               value={maxSizeMb}
               onChange={(event) => setMaxSizeMb(event.target.value)}
             />
@@ -457,7 +479,7 @@ export function Files({
                   {files.length === 0 ? (
                     <tr>
                       <td colSpan={9} className="px-3 py-16 text-center text-neutral-500">
-                        {t('noScanResults')}
+                        {emptyMessage}
                       </td>
                     </tr>
                   ) : files.map((file) => (
@@ -507,7 +529,7 @@ export function Files({
             ) : (
               <div className="p-3">
                 {files.length === 0 ? (
-                  <div className="px-3 py-16 text-center text-sm text-neutral-500">{t('noScanResults')}</div>
+                  <div className="px-3 py-16 text-center text-sm text-neutral-500">{emptyMessage}</div>
                 ) : (
                   <div className="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-3">
                     {files.map((file) => (
@@ -565,7 +587,9 @@ export function Files({
 
           <div className="mt-3 flex shrink-0 items-center justify-between gap-3 text-sm">
             <div className="text-neutral-500">
-              {pageLabel(total, offset, limit)} · {selectedFileIds.length.toLocaleString()} {t('selected')}
+              {summary
+                ? `${pageLabel(total, offset, limit)} · ${selectedFileIds.length.toLocaleString()} ${t('selected')}`
+                : 'No folder scanned yet — choose a folder to begin.'}
             </div>
             <div className="flex flex-wrap items-center justify-end gap-2">
               <button
@@ -712,7 +736,7 @@ export function Files({
               <div className="flex justify-between gap-3"><span className="text-neutral-500">{t('dimensions')}</span><span className="font-medium">{detailFile.width && detailFile.height ? `${detailFile.width}x${detailFile.height}` : '-'}</span></div>
               <div className="flex justify-between gap-3"><span className="text-neutral-500">Extension</span><span className="font-medium">{detailFile.extension}</span></div>
               <div className="flex justify-between gap-3"><span className="text-neutral-500">Modified</span><span className="font-medium">{formatDate(detailFile.modifiedAt)}</span></div>
-              <div className="flex justify-between gap-3"><span className="text-neutral-500">Status</span><span className="font-medium">{detailFile.status}</span></div>
+              <div className="flex justify-between gap-3"><span className="text-neutral-500">Status</span><span className="font-medium">{STATUS_LABELS[detailFile.status] ?? detailFile.status}</span></div>
             </div>
 
             <div className="rounded-md border border-line p-3 dark:border-neutral-800">
@@ -732,9 +756,12 @@ export function Files({
         )}
         {summary && (
           <div className="mt-5 space-y-3 rounded-md bg-neutral-50 p-3 text-sm dark:bg-neutral-950">
-            <div className="flex justify-between"><span className="text-neutral-500">Batch</span><span className="font-medium">{summary.batchId.slice(0, 8)}</span></div>
-            <div className="flex justify-between"><span className="text-neutral-500">Status</span><span className="font-medium capitalize">{summary.status}</span></div>
+            <div className="flex justify-between"><span className="text-neutral-500">Status</span><span className="font-medium">{SCAN_STATUS_LABELS[summary.status] ?? summary.status}</span></div>
             <div className="flex justify-between"><span className="text-neutral-500">{t('total')}</span><span className="font-medium">{summary.fileCount.toLocaleString()}</span></div>
+            <div className="flex justify-between"><span className="text-neutral-500">Scan ID</span><span className="font-medium" title={summary.batchId}>{summary.batchId.slice(0, 8)}</span></div>
+            {summary.status === 'failed' && summary.errorMessage && (
+              <div className="rounded bg-rose-50 px-2 py-1 text-rose-700 dark:bg-rose-950 dark:text-rose-200">{summary.errorMessage}</div>
+            )}
           </div>
         )}
       </aside>

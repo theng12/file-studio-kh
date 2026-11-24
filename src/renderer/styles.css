@@ -7,6 +7,13 @@
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
+  /* Shared KH layout numbers (studio-design-tokens.json) as CSS variables. */
+  --space-xs: 4px; --space-tight: 6px; --space-s: 8px; --space-m: 12px;
+  --space-l: 16px; --space-xl: 24px; --space-page: 28px;
+  --radius-control: 6px; --radius-card: 8px; --radius-sheet: 12px;
+  --sidebar-width: 220px;
+  --color-page: #f5f6f7; --color-surface: #ffffff; --color-border: #d8dde3;
+  --color-muted: #6b7280; --color-body: #202124;
 }
 
 :root.dark {

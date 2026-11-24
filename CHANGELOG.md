@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.6.6 — 2026-11-24
+
+### Changed
+
+- **A clearer interface, brought in line with the house design rules.** The version now lives in a pill
+  at the bottom of the sidebar that opens What's New (with a Done button and real bullets); the app
+  starts on the System appearance instead of forcing Light; the Files list names statuses in plain
+  words, says "Not scanned yet" before a folder is chosen, and its empty and error messages say what to
+  do next.
+- Shared layout numbers — spacing, corner radius, text sizes and sidebar width — are defined once as
+  tokens instead of scattered values.
+
 ## 0.6.5 — 2026-11-23
 
 ### Fixed

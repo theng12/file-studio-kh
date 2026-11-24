@@ -11,7 +11,7 @@ function settingsFile(): string {
 
 function defaults(): AppSettings {
   return {
-    theme: 'light',
+    theme: 'system',
     uiLanguage: 'en',
     defaultSaveLocation: join(app.getPath('documents'), 'File Studio KH'),
     scanDepth: 8,
@@ -30,7 +30,7 @@ function coerceSettings(value: Partial<AppSettings>): AppSettings {
 
   return {
     ...merged,
-    theme: ['light', 'dark', 'system'].includes(merged.theme) ? merged.theme : 'light',
+    theme: merged.theme === 'light' || merged.theme === 'dark' || merged.theme === 'system' ? merged.theme : 'system',
     uiLanguage: merged.uiLanguage === 'km' ? 'km' : 'en',
     scanDepth: Math.min(Math.max(Number(merged.scanDepth) || 8, 1), 20),
     includeHidden: Boolean(merged.includeHidden),

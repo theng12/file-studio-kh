@@ -31,8 +31,26 @@ function applyTheme(mode: AppSettings['theme']): void {
 
 function parseCurrentChangelog(version: string): string {
   const escaped = version.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const match = changelogRaw.match(new RegExp(`## \\[${escaped}\\][\\s\\S]*?(?=\\n## \\[|$)`));
+  // CHANGELOG headings look like `## 0.6.5 — 2026-11-23`, not `## [0.6.5]`.
+  const match = changelogRaw.match(new RegExp(`## ${escaped}[^\\n]*\\n([\\s\\S]*?)(?=\\n## |$)`));
   return match?.[0]?.trim() ?? changelogRaw.trim();
+}
+
+function ChangelogBody({ text }: { text: string }) {
+  return (
+    <div className="space-y-2 text-sm leading-6 text-neutral-700 dark:text-neutral-200">
+      {text.split('\n').map((line, i) => {
+        if (/^#{2,3}\s/.test(line)) {
+          return <div key={i} className="pt-1 text-base font-semibold text-neutral-900 dark:text-neutral-100">{line.replace(/^#{2,3}\s*/, '')}</div>;
+        }
+        if (/^-\s/.test(line)) {
+          return <div key={i} className="flex gap-2"><span className="text-neutral-400">•</span><span>{line.replace(/^-\s*/, '').replace(/\*\*/g, '')}</span></div>;
+        }
+        if (!line.trim()) return null;
+        return <p key={i}>{line.replace(/\*\*/g, '')}</p>;
+      })}
+    </div>
+  );
 }
 
 export default function App() {
@@ -90,6 +108,17 @@ export default function App() {
     void window.api.app.getUpdateHoldStatus().then((status) => {
       setUpdateHoldFault(status.tokenFault);
     });
+  }, []);
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.metaKey && event.key === ',') {
+        event.preventDefault();
+        setRoute('settings');
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, []);
 
   useEffect(() => {
@@ -387,15 +416,29 @@ export default function App() {
         open={manualWhatsNewOpen}
         onClose={() => setManualWhatsNewOpen(false)}
       >
-        <pre className="whitespace-pre-wrap rounded-md bg-neutral-50 p-4 text-sm leading-6 text-neutral-700 dark:bg-neutral-950 dark:text-neutral-200">
-          {changelogRaw.trim()}
-        </pre>
+        <ChangelogBody text={changelogRaw.trim()} />
+        <div className="mt-4 flex justify-end">
+          <button
+            type="button"
+            className="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800"
+            onClick={() => setManualWhatsNewOpen(false)}
+          >
+            {translate(settings?.uiLanguage, 'closeEsc').replace(/\s*\(Esc\)$/, '')}
+          </button>
+        </div>
       </Modal>
 
       <Modal title={translate(settings?.uiLanguage, 'whatsNew')} open={autoWhatsNewOpen} onClose={closeAutoWhatsNew}>
-        <pre className="whitespace-pre-wrap rounded-md bg-neutral-50 p-4 text-sm leading-6 text-neutral-700 dark:bg-neutral-950 dark:text-neutral-200">
-          {parseCurrentChangelog(info?.version ?? '0.1.0')}
-        </pre>
+        <ChangelogBody text={parseCurrentChangelog(info?.version ?? '0.1.0')} />
+        <div className="mt-4 flex justify-end">
+          <button
+            type="button"
+            className="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800"
+            onClick={closeAutoWhatsNew}
+          >
+            {translate(settings?.uiLanguage, 'closeEsc').replace(/\s*\(Esc\)$/, '')}
+          </button>
+        </div>
       </Modal>
 
       <Toasts toasts={toasts} />
