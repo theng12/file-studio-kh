@@ -59,6 +59,16 @@ number below comes from the dedicated `idle` step, which launches the shipped DM
 > "publish it then. also stop waiting for me confirmation each time. i've already set up a rule that says
 > publish upon green"
 
+## Screenshots (§5d) — NOT captured (a finding, stated plainly)
+
+`check-app-screenshots.sh 7a035b7b380c` on the repo reports:
+`MISSING: no docs/screenshots/ — 3–4 images of the main screen, the one flow the app exists for, and
+Settings only if it carries a real decision`, **rc=1**. So 0.6.6 published on the green gate and the
+owner's publish-upon-green rule, but **without the §5d screenshots**. They are owed and will be captured
+from this 0.6.6 DMG (hidden instance / `--test-mode`, throwaway data dir, invented demo file names) and
+committed to `docs/screenshots/` + README — a docs-only change; the shipped binary is unchanged. Recorded
+here rather than left silent, because a missing screenshot is a finding, not a note.
+
 ## Not proven
 
 - The Sparkle self-update loop itself (a version replacing itself live). The appcast now names 0.6.6; the
