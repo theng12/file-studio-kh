@@ -59,15 +59,24 @@ number below comes from the dedicated `idle` step, which launches the shipped DM
 > "publish it then. also stop waiting for me confirmation each time. i've already set up a rule that says
 > publish upon green"
 
-## Screenshots (§5d) — NOT captured (a finding, stated plainly)
+## Screenshots (§5d) — captured from this artifact, after the tag (docs-only)
 
 `check-app-screenshots.sh 7a035b7b380c` on the repo reports:
-`MISSING: no docs/screenshots/ — 3–4 images of the main screen, the one flow the app exists for, and
-Settings only if it carries a real decision`, **rc=1**. So 0.6.6 published on the green gate and the
-owner's publish-upon-green rule, but **without the §5d screenshots**. They are owed and will be captured
-from this 0.6.6 DMG (hidden instance / `--test-mode`, throwaway data dir, invented demo file names) and
-committed to `docs/screenshots/` + README — a docs-only change; the shipped binary is unchanged. Recorded
-here rather than left silent, because a missing screenshot is a finding, not a note.
+`PASS: 3 screenshots, each within size, named, referenced, and clean in text and metadata`, **rc=0**.
+
+- `docs/screenshots/dashboard-light.png` (218 KB), `files-light.png` (327 KB), `settings-dark.png` (299 KB),
+  each referenced from `README.md`. They were missing when the tag was cut, so they landed after it: a
+  docs-only change, the published binary is untouched.
+- Taken from **this released artifact** — the `0.6.6` DMG (sha `fc4c129f…`) mounted read-only, the bundle
+  copied out and `codesign -v` checked, launched with `--test-mode` (window never shown, no Dock icon) and a
+  throwaway `FSKH_TEST_DATA_DIR`, driven over the DevTools protocol. No pointer, no keystroke, nothing on
+  the owner's desktop. The demo library is a throwaway 600 MB disk image at `/Volumes/Studio Archive` with
+  invented file names, and the Settings save path was pointed inside it, so no real path is in any picture.
+
+**Finding, not fixed in this artifact:** in the **Files list view** the `PREVIEW` and `FILENAME` headers
+overlap (`PREVIEWFILENAME`) at every window width — the Preview column is a fixed `w-16` (64 px) and its
+uppercase, tracked label does not fit. The Files shot above therefore uses **Grid** view. The fix is one
+class (`w-16` → `w-24` on that `<th>`), which needs a build: it belongs to the next version.
 
 ## Not proven
 

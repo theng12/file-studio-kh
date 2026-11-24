@@ -4,6 +4,14 @@ File Studio KH is a local-first macOS desktop app for reviewing and organizing m
 
 It is built for folders that already exist on your Mac. You choose a folder, scan it, inspect what is inside, preview bulk file actions, and then apply only the changes you confirm.
 
+## Screenshots
+
+Captured from the released 0.6.6 build, on a demo folder.
+
+![Dashboard after a scan — light](docs/screenshots/dashboard-light.png)
+![Files in grid view — light](docs/screenshots/files-light.png)
+![Settings, on the Dark appearance](docs/screenshots/settings-dark.png)
+
 ## What It Is For
 
 - Scan a working folder and see file counts, folder groups, file types, sizes, dimensions, and possible messy filenames.
