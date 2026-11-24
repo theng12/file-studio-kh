@@ -6,18 +6,22 @@
     <description>File Studio KH updates</description>
     <language>en</language>
     <item>
-      <title>Version 0.6.5</title>
-      <pubDate>Mon, 23 Nov 2026 16:24:21 GMT</pubDate>
-      <sparkle:version>0.6.5</sparkle:version>
-      <sparkle:shortVersionString>0.6.5</sparkle:shortVersionString>
+      <title>Version 0.6.6</title>
+      <pubDate>Tue, 24 Nov 2026 10:28:44 GMT</pubDate>
+      <sparkle:version>0.6.6</sparkle:version>
+      <sparkle:shortVersionString>0.6.6</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>12.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[<pre>Fixed
-• **The app starts again.** 0.6.4 added the self-update engine but its build replaced Electron's
-  required runtime entitlements, so the app quit about a second after launch (V8 traps without JIT).
-  This build restores `allow-jit` and `allow-unsigned-executable-memory` alongside the
-  library-validation setting the engine needs. Nothing else changes.</pre>]]></description>
-      <enclosure url="https://github.com/theng12/file-studio-kh/releases/download/0.6.5/File.Studio.KH-0.6.5-arm64.dmg"
-                 length="145365632" type="application/octet-stream" sparkle:edSignature="ur7deMwGyk6P1orvJ/4OIXLy+2cbLAVDN1QZxmyfaLJwyTZIqdAjSjaY9x2Tfnwygcnfaq75rEQe9UavcAB3BQ=="/>
+      <description><![CDATA[<pre>Changed
+• **A clearer interface, brought in line with the house design rules.** The version now lives in a pill
+  at the bottom of the sidebar that opens What's New (with a Done button and real bullets); the app
+  now follows your Mac's appearance (System) by default instead of forcing Light — a Light or Dark
+  choice you already made is kept; the Files list names statuses in plain
+  words, says "Not scanned yet" before a folder is chosen, and its empty and error messages say what to
+  do next.
+• Shared layout numbers — spacing, corner radius, text sizes and sidebar width — are defined once as
+  tokens instead of scattered values.</pre>]]></description>
+      <enclosure url="https://github.com/theng12/file-studio-kh/releases/download/0.6.6/File.Studio.KH-0.6.6-arm64.dmg"
+                 length="144960883" type="application/octet-stream" sparkle:edSignature="LblaOj8MDHehH43hfmCZzNnSK6uDON5o7YGNDfecaNzFB5EMqWUYCV/7xQllsqwFk/+g3nSZbCm2fOzhC4IeBA=="/>
     </item>
   </channel>
 </rss>
