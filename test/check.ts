@@ -325,6 +325,7 @@ test('settings are clamped to their allowed range instead of trusted', () => {
   const narrow = SettingsService.set({ scanDepth: 100, thumbnailCacheLimitMb: 1, theme: 'neon' as never });
   assert.equal(narrow.scanDepth, 20);
   assert.equal(narrow.thumbnailCacheLimitMb, 128);
-  assert.equal(narrow.theme, 'light');
+  assert.equal(narrow.theme, 'system');
+  assert.equal(SettingsService.set({ theme: 'default' as never }).theme, 'system');
   SettingsService.set({ scanDepth: 8, thumbnailCacheLimitMb: 1024 });
 });

@@ -38,7 +38,7 @@ const out = path.resolve(root, arg('out', 'docs/appcast.xml'));
 const minSystem = arg('min-system', '12.0');
 const feedUrl = 'https://theng12.github.io/file-studio-kh/appcast.xml';
 const signUpdate = process.env.SIGN_UPDATE
-  || '/Users/vengtheng/Developer/_orchestra/developer-system/sparkle-shim-20261123/vendor/bin/sign_update';
+  || `${process.env.HOME}/Developer/_orchestra/developer-system/sparkle-shim-20261123/vendor/bin/sign_update`;
 const key = process.env.SPARKLE_KEY || path.join(os.homedir(), '.kh-sparkle', 'kh.filestudio.app', 'private.key');
 
 if (!fs.existsSync(dmg)) { console.error(`make-appcast: no DMG at ${dmg}`); process.exit(2); }

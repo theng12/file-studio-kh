@@ -41,7 +41,7 @@ S1=$(stat -f '%z:%m' "$DMG"); sleep 1; S2=$(stat -f '%z:%m' "$DMG")
 
 # The packaged app must actually launch. The gate's boot runs dev Electron and cannot see this:
 # 0.6.4 died in V8 ~1s after launch on a green gate (rows 20261123-170/171). Blocking.
-LAUNCH_CHECK="${KH_LAUNCH_CHECK:-/Users/vengtheng/Developer/_orchestra/tools/pinned/install-launch-check-847e77db5c99d5d6.sh}"
+LAUNCH_CHECK="${KH_LAUNCH_CHECK:-${HOME:?HOME must be set}/Developer/_orchestra/tools/pinned/install-launch-check-847e77db5c99d5d6.sh}"
 [ -x "$LAUNCH_CHECK" ] || { echo "launch check missing at $LAUNCH_CHECK (set KH_LAUNCH_CHECK)" >&2; exit 1; }
 bash "$LAUNCH_CHECK" "$DMG" "File Studio KH" \
   || { echo "the packaged app did not launch (install-launch-check) — refusing to keep this DMG" >&2; exit 1; }
