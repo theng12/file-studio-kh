@@ -6,22 +6,17 @@
     <description>File Studio KH updates</description>
     <language>en</language>
     <item>
-      <title>Version 0.6.6</title>
-      <pubDate>Tue, 24 Nov 2026 10:28:44 GMT</pubDate>
-      <sparkle:version>0.6.6</sparkle:version>
-      <sparkle:shortVersionString>0.6.6</sparkle:shortVersionString>
+      <title>Version 0.6.7</title>
+      <pubDate>Tue, 24 Nov 2026 19:47:34 GMT</pubDate>
+      <sparkle:version>0.6.7</sparkle:version>
+      <sparkle:shortVersionString>0.6.7</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>12.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[<pre>Changed
-• **A clearer interface, brought in line with the house design rules.** The version now lives in a pill
-  at the bottom of the sidebar that opens What's New (with a Done button and real bullets); the app
-  now follows your Mac's appearance (System) by default instead of forcing Light — a Light or Dark
-  choice you already made is kept; the Files list names statuses in plain
-  words, says "Not scanned yet" before a folder is chosen, and its empty and error messages say what to
-  do next.
-• Shared layout numbers — spacing, corner radius, text sizes and sidebar width — are defined once as
-  tokens instead of scattered values.</pre>]]></description>
-      <enclosure url="https://github.com/theng12/file-studio-kh/releases/download/0.6.6/File.Studio.KH-0.6.6-arm64.dmg"
-                 length="144960883" type="application/octet-stream" sparkle:edSignature="LblaOj8MDHehH43hfmCZzNnSK6uDON5o7YGNDfecaNzFB5EMqWUYCV/7xQllsqwFk/+g3nSZbCm2fOzhC4IeBA=="/>
+      <description><![CDATA[<pre>Fixed
+• **Files list columns no longer collide.** The Preview header is now wide enough for its label, and the
+  list table keeps a minimum width so the Filename column stays visible and readable instead of collapsing
+  behind its neighbors on standard window sizes.</pre>]]></description>
+      <enclosure url="https://github.com/theng12/file-studio-kh/releases/download/0.6.7/File.Studio.KH-0.6.7-arm64.dmg"
+                 length="145235758" type="application/octet-stream" sparkle:edSignature="sjgsT4pyjiUJcPepYa7HR/Oy9tKlhm7HqNNpgRIF7zWeRLPZQpTF63rmVNYA2SMNdeFlvEQ5nuuJGRii07bXDg=="/>
     </item>
   </channel>
 </rss>
