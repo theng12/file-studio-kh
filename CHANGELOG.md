@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.7 — 2026-11-24
+
+### Fixed
+
+- **Files list columns no longer collide.** The Preview header is now wide enough for its label, and the
+  list table keeps a minimum width so the Filename column stays visible and readable instead of collapsing
+  behind its neighbors on standard window sizes.
+
 ## 0.6.6 — 2026-11-24
 
 ### Changed

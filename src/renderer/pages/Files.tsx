@@ -454,7 +454,7 @@ export function Files({
           </div>
           <div className="min-h-0 flex-1 overflow-auto rounded-md border border-line dark:border-neutral-800">
             {viewMode === 'list' ? (
-              <table className="w-full table-fixed text-left text-sm">
+              <table className="w-full min-w-[1060px] table-fixed text-left text-sm">
                 <thead className="sticky top-0 z-10 bg-neutral-50 text-xs uppercase tracking-[0.12em] text-neutral-500 dark:bg-neutral-950">
                   <tr>
                     <th className="w-10 px-3 py-3">
@@ -465,14 +465,14 @@ export function Files({
                         onChange={toggleVisible}
                       />
                     </th>
-                    <th className="w-16 px-3 py-3">{t('preview')}</th>
+                    <th className="w-24 px-3 py-3">{t('preview')}</th>
                     <th className="px-3 py-3">{t('filename')}</th>
                     <th className="w-24 px-3 py-3">{t('type')}</th>
-                    <th className="w-24 px-3 py-3">Ext</th>
+                    <th className="w-20 px-3 py-3">Ext</th>
                     <th className="w-28 px-3 py-3">{t('dimensions')}</th>
                     <th className="w-24 px-3 py-3">Size</th>
                     <th className="w-32 px-3 py-3">Modified</th>
-                    <th className="w-52 px-3 py-3">Tags</th>
+                    <th className="w-44 px-3 py-3">Tags</th>
                   </tr>
                 </thead>
                 <tbody>

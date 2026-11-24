@@ -6,10 +6,10 @@ It is built for folders that already exist on your Mac. You choose a folder, sca
 
 ## Screenshots
 
-Captured from the released 0.6.6 build, on a demo folder.
+Captured from the 0.6.7 build, on a demo folder.
 
 ![Dashboard after a scan — light](docs/screenshots/dashboard-light.png)
-![Files in grid view — light](docs/screenshots/files-light.png)
+![Files in list view — light](docs/screenshots/files-light.png)
 ![Settings, on the Dark appearance](docs/screenshots/settings-dark.png)
 
 ## What It Is For
