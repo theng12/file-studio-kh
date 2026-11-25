@@ -5,7 +5,7 @@ These inputs are **not committed** (`../../.gitignore`); fetch/pin them where th
 (this file's folder) and `vendor/khsparkle/Sparkle.framework`.
 
 - **Shim static library** `libkhsparkle.a` — the shared, accepted shim:
-  `/Users/vengtheng/Developer/_orchestra/developer-system/sparkle-shim-20261123/dist/libkhsparkle.a`,
+  `$HOME/Developer/_orchestra/developer-system/sparkle-shim-20261123/dist/libkhsparkle.a`,
   sha256 `818826a79d4e54885cbb5ad167f7425da8ba77436c6a5e277532f400aa1b4216` (universal arm64+x86_64;
   rebuilt 2026-11-23 with `expand_tilde` so `KHHoldTokenFile` may use `~/…` — row `20261123-95`).
   `khsparkle.h` is the shim's `include/khsparkle.h`.
