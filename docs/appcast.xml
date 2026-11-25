@@ -6,17 +6,23 @@
     <description>File Studio KH updates</description>
     <language>en</language>
     <item>
-      <title>Version 0.6.7</title>
-      <pubDate>Tue, 24 Nov 2026 19:47:34 GMT</pubDate>
-      <sparkle:version>0.6.7</sparkle:version>
-      <sparkle:shortVersionString>0.6.7</sparkle:shortVersionString>
+      <title>Version 0.6.8</title>
+      <pubDate>Wed, 25 Nov 2026 15:14:04 GMT</pubDate>
+      <sparkle:version>0.6.8</sparkle:version>
+      <sparkle:shortVersionString>0.6.8</sparkle:shortVersionString>
       <sparkle:minimumSystemVersion>12.0</sparkle:minimumSystemVersion>
-      <description><![CDATA[<pre>Fixed
-• **Files list columns no longer collide.** The Preview header is now wide enough for its label, and the
-  list table keeps a minimum width so the Filename column stays visible and readable instead of collapsing
-  behind its neighbors on standard window sizes.</pre>]]></description>
-      <enclosure url="https://github.com/theng12/file-studio-kh/releases/download/0.6.7/File.Studio.KH-0.6.7-arm64.dmg"
-                 length="145235758" type="application/octet-stream" sparkle:edSignature="sjgsT4pyjiUJcPepYa7HR/Oy9tKlhm7HqNNpgRIF7zWeRLPZQpTF63rmVNYA2SMNdeFlvEQ5nuuJGRii07bXDg=="/>
+      <description><![CDATA[<pre>Changed
+• **Up-to-date update engine.** The bundled Sparkle shim library was replaced with the current pinned
+  build and the recorded checksum now matches the file shipped. No behaviour changes in the app.
+
+
+Fixed
+• **Build and gate scripts find Homebrew tools.** They now put `/opt/homebrew/bin` on the path, so a
+  non-interactive shell no longer falls back to the system Python or misses `pkg-config`.
+• **A build no longer trips over a killed run's leftover mount.** If an earlier build was killed while
+  its disk image was attached, the DMG is detached before the new one is written.</pre>]]></description>
+      <enclosure url="https://github.com/theng12/file-studio-kh/releases/download/0.6.8/File.Studio.KH-0.6.8-arm64.dmg"
+                 length="145093829" type="application/octet-stream" sparkle:edSignature="oNAA0QmA/G5g1ZGTAH5USKYHKVVtvwEzVk5ThueWgeCWhndX5chafp9q3q34B8g6MnnSoBmxBh3iB+8EGvLxAg=="/>
     </item>
   </channel>
 </rss>
