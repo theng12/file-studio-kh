@@ -12,8 +12,8 @@ bytes: 145093829
 scan: sha256=9be2c44c20ba7fa2b9a3b9429cef3562b55f22aa6013fa40cbc9c0c3d385a650 clean — scan-dmg/2026-11-20, exit 0, 490 files, `excused: []`
 gate config: `$HOME/Developer/_orchestra/tools/gate-configs/file-0.6.8.sh`
 gate exit: 0 — `GATE PASS file dea7d97e2a5269f7797b8cea0805f8457a9b6779 2026-11-25T15:10:33Z`
-feed readback: PENDING — estate `file-studio` row still served 0.6.7 at 15:52Z; S001's next feed pass carries it
-page state: same — `https://theng12.github.io/file-studio-kh/appcast.xml` serves `0.6.8` with `length="145093829"` and the 0.6.8 enclosure; the estate feed page does not carry 0.6.8 yet
+feed readback: PASS — `feed-verify.sh file-studio --expect-version 0.6.8 --expect-sha 9be2c44c… --public-key …` → `PASS signature — Ed25519 verified against key 615eaa69b3def113`, row `file-studio 0.6.8`, sha256 `9be2c44c20ba7fa2b9a3b9429cef3562b55f22aa6013fa40cbc9c0c3d385a650`, 145093829 bytes, `file "File Studio KH-0.6.8-arm64.dmg"`, tagline present, published `2026-11-25T16:13:39.741Z`; served envelope sha256 `62d477c7d82a66d970b8e66dc44f039e50fe9978d77d281ce7584a17d0a3329d` (38,301 B), `kh-releases` commit `9970b69969e985520f0b38deac0bb8417194f330`
+page state: same — `https://theng12.github.io/file-studio-kh/appcast.xml` serves `0.6.8` with `length="145093829"`, and the estate feed page serves `file-studio 0.6.8` with the same sha
 dirty: false
 retired: 0.6.6 DMG (138 MB), two superseded 0.6.8 build attempts (238 MB), the orphan 0.6.6 blockmap, each with a MANIFEST.md in `~/Desktop/_trash/file-studio-kh/`
 not proven: live Sparkle self-update loop (0.6.7 → 0.6.8 unattended) — UNMEASURED; long-run multi-job idle soak — UNMEASURED; install on a second Mac — UNMEASURED (the Launcher installs on the owner's automatic setting); physical/owner-observation — not exercised.
