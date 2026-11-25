@@ -52,8 +52,11 @@ evidence `lead/gate-20261125-215155-80661` (52 KB). Steps, all passed inside the
   `description`, `localFile`), read back through the GitHub contents API at that ref.
 - Appcast: `docs/appcast.xml` generated from the published bytes; Ed25519 signature verified
   (`verify-appcast.swift` → `SIGNATURE OK`) both locally and over the anonymously downloaded DMG against the
-  **served** appcast. Pages: two push-triggered runs failed with "Found 0 artifact(s)" (issue row
-  `20261125-56`); a `workflow_dispatch` run succeeded and the served appcast now offers 0.6.8 with its enclosure.
+  **served** appcast. Pages: two push-triggered runs failed with "Found 0 artifact(s)"; a `workflow_dispatch`
+  run then succeeded and the served appcast offers 0.6.8 with its enclosure. Those failures were a **declared
+  GitHub incident** (partial outage, Actions and Pages, opened 15:55Z 2026-11-25), not a deployment fault —
+  rows `20261125-56` and its correction `20261125-64`. Later `docs/` pushes may still fail to redeploy until
+  GitHub clears it; the served page is unaffected.
 - Estate feed row: `file-studio 0.6.7` as of 15:52Z. S001 verified the asset and hold fields and will carry
   0.6.8 in its next pass; this receipt's `feed readback` line stays PENDING until that pass commits and
   `feed-verify.sh file-studio --expect-version 0.6.8 --expect-sha 9be2c44c… --public-key …` passes.
