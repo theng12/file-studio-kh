@@ -26,6 +26,10 @@ test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$APP/Con
 ditto "$APP" "$STAGE/File Studio KH.app"
 ln -s /Applications "$STAGE/Applications"
 DMG="dist/File Studio KH-$VERSION-arm64.dmg"
+# A killed earlier build can leave this exact image attached, and the new write then fails verify
+# with "Resource temporarily unavailable" (row 20261123-153). Detach it first.
+hdiutil info | awk -v img="$DMG" '/^image-path/{inimg=($0 ~ img)} inimg && /^\//{print $1}' |
+  while read -r dev; do hdiutil detach "$dev" >/dev/null 2>&1 || hdiutil detach "$dev" -force >/dev/null 2>&1 || true; done
 # A superseded build of the same version rotates aside instead of being overwritten.
 if [ -e "$DMG" ]; then
   ROTATE="$HOME/Desktop/_trash/file-studio-kh/$(date +%Y-%m-%d) superseded"

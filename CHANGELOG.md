@@ -11,6 +11,8 @@
 
 - **Build and gate scripts find Homebrew tools.** They now put `/opt/homebrew/bin` on the path, so a
   non-interactive shell no longer falls back to the system Python or misses `pkg-config`.
+- **A build no longer trips over a killed run's leftover mount.** If an earlier build was killed while
+  its disk image was attached, the DMG is detached before the new one is written.
 
 ## 0.6.7 — 2026-11-24
 
