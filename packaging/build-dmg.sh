@@ -2,6 +2,9 @@
 # Builds the DMG this app ships from: signed, verified, leak-scanned, and kept beside
 # the previous one. Publishing is a separate step (the canonical release-push.sh in update-studio-kh).
 set -euo pipefail
+# A non-login shell does not inherit the login PATH; without this, Homebrew tools fall back to
+# /usr/bin (python3 3.9, no pkg-config). Row 20261122-318.
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 cd "$(dirname "$0")/.."
 unset ELECTRON_RUN_AS_NODE
 VERSION="$(node -p "require('./package.json').version")"

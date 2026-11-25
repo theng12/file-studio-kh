@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.6.8 — 2026-11-25
+
+### Changed
+
+- **Up-to-date update engine.** The bundled Sparkle shim library was replaced with the current pinned
+  build and the recorded checksum now matches the file shipped. No behaviour changes in the app.
+
+### Fixed
+
+- **Build and gate scripts find Homebrew tools.** They now put `/opt/homebrew/bin` on the path, so a
+  non-interactive shell no longer falls back to the system Python or misses `pkg-config`.
+
 ## 0.6.7 — 2026-11-24
 
 ### Fixed

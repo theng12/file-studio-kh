@@ -6,8 +6,10 @@ These inputs are **not committed** (`../../.gitignore`); fetch/pin them where th
 
 - **Shim static library** `libkhsparkle.a` — the shared, accepted shim:
   `$HOME/Developer/_orchestra/developer-system/sparkle-shim-20261123/dist/libkhsparkle.a`,
-  sha256 `818826a79d4e54885cbb5ad167f7425da8ba77436c6a5e277532f400aa1b4216` (universal arm64+x86_64;
-  rebuilt 2026-11-23 with `expand_tilde` so `KHHoldTokenFile` may use `~/…` — row `20261123-95`).
+  sha256 `2bce760e7749a0f21dfa378c53c391d039401355012e774a81b691043a3cb17f` (86,632 bytes, universal
+  arm64+x86_64; rebuilt 2026-11-23 with `expand_tilde` so `KHHoldTokenFile` may use `~/…` — row
+  `20261123-95`; adopted as the current pinned shim in 0.6.8, replacing the accepted-previous
+  `818826a79d4e54885cbb5ad167f7425da8ba77436c6a5e277532f400aa1b4216`).
   `khsparkle.h` is the shim's `include/khsparkle.h`.
 - **Sparkle framework** `2.10.1` (build 2065):
   `https://github.com/sparkle-project/Sparkle/releases/download/2.10.1/Sparkle-2.10.1.tar.xz`,

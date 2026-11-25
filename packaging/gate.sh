@@ -6,6 +6,9 @@
 # Nothing here opens a window on the owner's desktop: the check suite runs with a stub
 # `electron`, and the boot test runs the built app hidden with its own data folder.
 set -euo pipefail
+# A non-login shell does not inherit the login PATH; without this, Homebrew tools fall back to
+# /usr/bin (python3 3.9, no pkg-config). Row 20261122-318.
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 cd "$(dirname "$0")/.."
 ROOT=$(pwd)
 TMP=$(mktemp -d)
